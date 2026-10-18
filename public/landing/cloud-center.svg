@@ -1,0 +1,29 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="530.645" height="44" viewBox="0 0 530.645 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Upper right cloud &#194;&#183; distant" filter="url(#filter0_n_0_5)">
+<path d="M0 44C0 34.9162 37.8113 17.9851 64.1322 32.8976C74.5431 19.6664 93.1174 -2.70871 134.879 26.2625C145.279 14.6554 209.937 -23.4021 247.184 26.2627C305.877 -27.5409 359.1 16.3858 371.905 26.2625C408.024 -19.2632 475.403 14.0733 480.824 30.9926C497.755 10.8901 539.4 30.7969 529 44H0Z" fill="url(#paint0_linear_0_5)"/>
+</g>
+<defs>
+<filter id="filter0_n_0_5" x="0" y="0" width="530.645" height="44" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feTurbulence type="fractalNoise" baseFrequency="2 2" stitchTiles="stitch" numOctaves="3" result="noise" seed="7038" />
+<feColorMatrix in="noise" type="luminanceToAlpha" result="alphaNoise" />
+<feComponentTransfer in="alphaNoise" result="coloredNoise1">
+<feFuncA type="discrete" tableValues="0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 "/>
+</feComponentTransfer>
+<feComposite operator="in" in2="shape" in="coloredNoise1" result="noise1Clipped" />
+<feFlood flood-color="rgba(0, 0, 0, 0.25)" result="color1Flood" />
+<feComposite operator="in" in2="noise1Clipped" in="color1Flood" result="color1" />
+<feMerge result="effect1_noise_0_5">
+<feMergeNode in="shape" />
+<feMergeNode in="color1" />
+</feMerge>
+</filter>
+<linearGradient id="paint0_linear_0_5" x1="235.897" y1="-32.2709" x2="234.701" y2="43.4979" gradientUnits="userSpaceOnUse">
+<stop stop-color="#F5F3FA"/>
+<stop offset="0.357703" stop-color="#C5B9EE"/>
+<stop offset="0.669948" stop-color="#8377AC"/>
+<stop offset="1" stop-color="#534870"/>
+</linearGradient>
+</defs>
+</svg>

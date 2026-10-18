@@ -1,3 +1,7 @@
 allowBuilds:
   sharp: false
   unrs-resolver: false
+
+overrides:
+  # Keep the patched glob parser even where development tools pin the older version.
+  "brace-expansion@5.0.9": "5.0.12"

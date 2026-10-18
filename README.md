@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GDGoC PLM
 
-## Getting Started
+Official website of **Google Developer Groups on Campus PLM**, the community at **Pamantasan ng Lungsod ng Maynila**.
 
-First, run the development server:
+Production: [www.gdgocplm.org](https://www.gdgocplm.org/). Built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
+The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. Events, a CMS, login, games, and other roadmap features are not implemented.
+
+## Local setup
+
+Use Node.js 22 or 24 LTS and pnpm **11.15.0** (also declared in `package.json`).
+
+```powershell
+pnpm install --frozen-lockfile
+Copy-Item .env.example .env.local
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [localhost:3000](http://localhost:3000). Fill `.env.local` with your hosted Supabase values if you want the real counter. Restart the server after changing environment variables.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Variable | Purpose |
+| --- | --- |
+| `SUPABASE_URL` | Hosted Supabase project URL |
+| `SUPABASE_SECRET_KEY` | Secret server API key; never prefix it with `NEXT_PUBLIC_` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Never commit `.env.local`, keys, tokens, or database passwords. The homepage works without backend credentials: a fresh counter shows unavailable rather than a fabricated total. Previously cached totals and locally saved taps remain on that browser.
 
-## Learn More
+## Build and verify
 
-To learn more about Next.js, take a look at the following resources:
+```powershell
+pnpm lint
+pnpm exec next typegen
+pnpm exec tsc --noEmit
+pnpm build
+pnpm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`next typegen` prepares route types for a fresh clone. TypeScript and lint checks run separately; a successful build is not a substitute for either. `pnpm audit --prod` checks shipped dependencies; `pnpm audit` also includes development tools.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Known tooling limitation at this release: the full audit reports [a `braces` advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) in ESLint/shadcn's development-only glob handling. The registry currently offers 3.0.3 and there is no published patch. Production dependencies pass their audit. Recheck before upgrading development tools; do not feed untrusted glob patterns into them. Next.js also emits a Google Sans Flex fallback-metrics warning; the real font loads successfully.
 
-## Deploy on Vercel
+## Supabase migrations
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Use the existing intended project. Review its migration history and the dry run before applying anything:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```powershell
+pnpm dlx supabase@2.121.0 login
+pnpm dlx supabase@2.121.0 link --project-ref YOUR_PROJECT_REF
+pnpm dlx supabase@2.121.0 migration list --linked
+pnpm dlx supabase@2.121.0 db push --linked --dry-run --skip-vault
+pnpm dlx supabase@2.121.0 db push --linked --skip-vault
+pnpm dlx supabase@2.121.0 db advisors --linked --type security --level warn --fail-on error
+```
+
+The first migration creates the counter/rate-limit tables. The second adds durable queue checkpoints and idempotent batch functions. The release permissions migration restricts the hosted automatic-RLS helper when it exists. Additive updates preserve the current total; do not reset the hosted database or rerun the initialization SQL manually.
+
+Counter tables have RLS enabled and are accessed only through the server secret role. Public/anonymous clients cannot execute the counter functions directly.
+
+## Architecture and data flow
+
+- The Server Component homepage supplies artwork and copy to the client landing experience. Shared placeholder pages stay server-rendered and do not mount the interactive counter.
+- Bird activation → IndexedDB local save → immediate rolling number/reaction → batch API request → atomic Supabase increment/checkpoint → reconciliation.
+- One sender per browser queue coordinates tabs. Batches contain at most 10 taps; retries retain the same identity and sequence, preventing duplicate additions after lost responses.
+- The anonymous HTTP-only cookie limits bursts, not unique people. IndexedDB retains pending taps; deleting site data or browser eviction can remove them. No email signup, analytics, or service worker is installed.
+
+The [counter guide](docs/sparks-counter.md) explains limits, API responses, recovery, and earlier isolated load measurements.
+
+## Content, branding, and search
+
+| Change | Edit |
+| --- | --- |
+| Official names, canonical address, metadata, social/profile URLs | `src/lib/site-config.ts` |
+| Visible homepage copy and artwork paths | `src/app/_landing/landing-config.ts` |
+| Font shared by homepage and placeholders | `src/app/fonts.ts` |
+| Shared placeholder presentation | `src/components/shared/page-template.tsx` |
+| Reusable logo source | `public/brand/gdg-mark.svg` |
+
+The [customization guide](docs/customization.md) retains exact spacing, colors, bird size, motion timing, milestones, and focus controls. The [artwork guide](public/landing/README.md) lists the original Figma exports. Tailwind utilities only: no CSS Modules, component stylesheets, or custom keyframes.
+
+`pnpm brand:generate` regenerates checked-in favicon/icon variants and the static 1200 × 630 share image using existing tooling. It downloads the source Google Sans Flex font only during regeneration; builds and requests do not regenerate these images. See [brand assets](public/brand/README.md).
+
+Search metadata identifies the official organization independently of the creative hero wording. The homepage includes Organization/WebSite JSON-LD and a self-canonical URL. The sitemap contains only `/`; placeholders use `noindex, follow`. Vercel preview/development builds disable indexing. No made-up events, reviews, statistics, or hidden keyword sections are added.
+
+## Production checklist
+
+1. Use the Next.js framework preset with the lockfile and the normal build command. Install development dependencies during the build; the shadcn CSS import is build-time tooling.
+2. Configure both Supabase variables as private production environment variables. Confirm migration parity and a clean security check before serving counter traffic.
+3. Connect `www.gdgocplm.org`, ensure HTTPS works, and redirect the bare domain to the canonical `www` hostname in the hosting dashboard. DNS/hosting changes are separate from this repository.
+4. Confirm `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest`, favicon, Apple icon, share image, canonical URLs, and all eight public routes on the deployed domain.
+5. Check 1440 × 686, 393px and 320px phones, short landscape, enlarged text, keyboard activation, and reduced motion. Mock API writes when testing bursts; do not inflate the public count.
+6. After deployment, verify ownership in Search Console and submit `https://www.gdgocplm.org/sitemap.xml`. Indexing and rankings are not immediate or guaranteed.
+
+Pushing `main` may trigger the connected Vercel deployment. This repository does not install analytics or automate deployment, DNS changes, or Search Console submissions.
+
+See [release verification](docs/release-verification.md) for the final checks and complete file inventory.

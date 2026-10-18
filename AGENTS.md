@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Styling
+
+Use Tailwind CSS utilities for component styling. Do not create CSS Modules or custom component stylesheets. Keep the existing global Tailwind/shadcn setup; use its utility and animation classes instead of adding bespoke CSS rules or keyframes.
