@@ -4,7 +4,7 @@ Official website of **Google Developer Groups on Campus PLM**, the community at 
 
 Production: [www.gdgocplm.org](https://www.gdgocplm.org/). Built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
-The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS includes a scoped editor, private previews, revision history, publication controls and protected media. See the [CMS guide](docs/cms.md) for setup and editor workflows.
+The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS includes a scoped editor, private previews, revision history, protected media and scheduled publication. See the [CMS guide](docs/cms.md) for setup and editor workflows. Start the [local scheduler](docs/cms.md#run-and-observe-the-local-scheduler) in a second terminal with `pnpm cms:scheduler`.
 
 ## Local setup
 

@@ -27,7 +27,10 @@ export default async function AdminDashboard() {
       {access.full_admin && (
         <section className="space-y-2">
           <h2 className="text-lg font-semibold">Administration</h2>
-          <Link className={editorLink} href="/admin/access">Manage administrator access</Link>
+          <div className="flex flex-wrap gap-x-5 gap-y-2">
+            <Link className={editorLink} href="/admin/access">Manage administrator access</Link>
+            <Link className={editorLink} href="/admin/schedule">Scheduled publications</Link>
+          </div>
         </section>
       )}
     </div>

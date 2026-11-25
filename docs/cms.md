@@ -1,6 +1,6 @@
 # Local CMS
 
-The CMS is implemented in numbered stages. Stages 1 through 3 added administrator access, revisions and publication, and fixed content types with protected media. Stage 4 adds the editor and private previews. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
+Stages 1–5 provide administrator access, immutable revisions, fixed content types and media, an editor with private previews, and scheduled publishing with officer handover. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
 
 ## Run locally
 
@@ -52,7 +52,7 @@ Google app registration, activation of the provider configuration, and the live 
 - **First full administrator.** Connect directly to the local database as the trusted database operator and run the statement below, replacing the example address with the officer's approved Google email. The invitation lasts 24 hours. The officer opens the local administrator sign-in and signs in before expiry. The database audit records the operator role and time.
 - **Invite or renew.** A full administrator opens **Manage administrator access**, enters the exact Google email, chooses a role and sets a deadline from 1 to 30 days. For a contributor, select the areas they can edit. Give the link to the approved officer directly. Saving an invitation for the same unbound address renews it. Cancel a pending invitation from its row.
 - **Recover access.** For a still active approved account, recover the Google account with its provider, then sign in again. If an identity is permanently lost or compromised, use another verified Google address. A remaining full administrator can invite it. If none can sign in, the trusted database operator uses the bootstrap procedure for the replacement. A previously revoked identity stays revoked, including in existing sessions. The same address cannot be granted again after revocation.
-- **Hand over.** Invite a replacement or choose **Update active account permissions** to promote an existing contributor. Verify replacement access before revoking the outgoing account. Keep a second trusted full administrator for recovery. The last active full administrator cannot be demoted or revoked. Use the access screen's confirmation to revoke and inspect the local audit when needed. Stage 5 will connect revocation to scheduled jobs.
+- **Hand over.** Invite a replacement or choose **Update active account permissions** to promote an existing contributor. Verify replacement access before revoking the outgoing account. Keep a second trusted full administrator for recovery. The last active full administrator cannot be demoted or revoked. Use the access screen's confirmation to revoke, then [assign and review each paused job](#stage-5-scheduled-publications).
 
 ```bash
 psql 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' -v ON_ERROR_STOP=1
@@ -108,7 +108,7 @@ The editor calls the server-only functions in `src/features/cms/server/content.t
 
 Call `applyCmsPublication` from a Server Action for manual publish, unpublish or archive. Supply a fresh operation UUID per confirmed operation, and reuse it with the same arguments if the response is lost. A successful call returns the record UUID, area, action, old and new slugs, and new live revision UUID. A successful replay returns the original effect even if publication has since changed. Reusing the UUID with different arguments fails.
 
-Stage 5 will call the same `cms_private.apply_publication` transaction from its trusted job runner after checking and locking the approved job. Pass the approving actor, a stable operation UUID, the pinned revision for publish, and the expected live UUID from approval. The private pinned mode can publish that revision after a newer draft is saved. It checks the actor's current publishing privilege and rejects a changed live pointer. Keep a job's state and its publication in the same transaction. After commit, the manual and scheduled paths both use `invalidateCmsPublication` to expire the `cms-public` tag, sitemap and admin layout. The caller can repeat invalidation after replay.
+The scheduler calls `cms_private.apply_publication` with the current approving officer, job UUID, pinned revision for publish, and expected live UUID. The transaction checks current publishing authority, applies the change and records its audit and queue outcome together. Manual and scheduled paths both call `invalidateCmsPublication` to expire the `cms-public` tag, sitemap and admin layout. The scheduler persists outstanding refreshes across process restarts.
 
 The anonymous `cms_read_published` RPC filters on the current live pointer and archive status. Its Stage 2 projection includes only the record UUID, area, title and slug. The public read uses `no-store`. Stage 6 will connect public routes and any tagged projections to this contract.
 
@@ -189,9 +189,54 @@ The browser fixture uses Chrome at `/usr/bin/google-chrome` by default. Set `CMS
 
 The Chrome workflow passed at desktop and mobile widths. It verified keyboard and confirmation focus, field errors, same-tab recovery, safe Markdown, file selection, private preview headers and anonymous denial, contributor scope, restore, publication confirmation, unpublish and archive. The media regression fixture, lint, route type generation, TypeScript, and the isolated production build with local font fixtures also passed.
 
+## Stage 5 scheduled publications
+
+1. Open a saved item as a full administrator and choose **Schedule publication**. Review the linked snapshot. Choose **Publish saved revision** or **Unpublish live revision**, enter the local date and time to the minute, and enter an IANA zone. The form starts with `Asia/Manila`. **Approve and schedule** records the officer, the revision and the resolved instant. The database rejects incomplete publications and times in the past.
+2. During a daylight-saving gap the selected local minute does not exist. Choose another time. During a fold the minute occurs twice. Enter the desired UTC date and time with zone `UTC` to select an occurrence explicitly. The queue preserves the entered minute and zone alongside its fixed UTC instant.
+3. Open **Scheduled publications** on the dashboard to see pending work. **Review revision** opens the exact approved snapshot. Later saved drafts need their own review and schedule to go live. If any publication action intervenes, the old job finishes as **Blocked**. A scheduled unpublish therefore cannot remove a replacement or a revision that someone took down and republished. Review the current state and create a fresh job if the change is still needed. **Cancel job** stops any pending or paused job.
+4. Revoking or demoting an officer immediately unassigns their pending jobs. A full administrator selects a different active full administrator for each job and chooses **Assign administrator**. That officer reviews the pinned revision and chooses **Approve revision**. Assignment alone leaves the job paused. An overdue job becomes eligible on the next runner tick after reapproval. Cancel any job whose original timing or content is no longer appropriate.
+
+### Run and observe the local scheduler
+
+Start local Supabase and the app, apply the migrations, then run one of these commands in another terminal:
+
+```bash
+pnpm cms:scheduler
+pnpm cms:scheduler --once
+```
+
+The first command polls every five seconds until interrupted. The second runs one pass with up to 25 due jobs and a cache refresh for up to 100 completed jobs. Use the existing `CMS_SUPABASE_URL` and local `CMS_SUPABASE_SECRET_KEY` from `.env.local`. The worker accepts only the loopback Supabase API. Its app target defaults to `http://127.0.0.1:3000`. Set `CMS_SCHEDULER_APP_PORT` when starting it against a different local app port. The queue survives shutdown. When the worker restarts it picks up eligible overdue work.
+
+The terminal reports job IDs and outcomes. Open **View finished jobs** for executed, cancelled or blocked jobs. An exhausted mutation budget queues a retry after one minute. Unexpected database errors roll back the transaction. The worker checks the queue again on the next pass. When an app refresh fails, **Cache refresh pending** stays visible on the executed job. Restart the app with the same local key and run another pass. The worker retries invalidation, verifies a new value under the public cache tag, and acknowledges only the completed jobs it observed. Repeated refreshes are safe.
+
+`cms_private.jobs` holds the target snapshot, live publication audit ID observed at approval, due instant, assignment, approval and cache-refresh state. Queue mutations and execution take the same transaction lock as access changes. A manual publication and a scheduled publication also lock the same content row. Whichever transition commits first determines what the next operation can do. The private publication audit has one execution row per job UUID. The queue and audit tables use RLS and narrow RPCs. Only the local server role can tick the queue or acknowledge a refresh.
+
+A trusted local operator can inspect the two audit histories with a job UUID copied from the terminal or selected from `cms_private.jobs`:
+
+```sql
+\prompt 'Job UUID: ' job
+select action, actor_id, operator_name, target_email, occurred_at, details
+from cms_private.audit where details->>'job' = :'job' order by id;
+select action, actor_id, occurred_at, revision_id
+from cms_private.content_audit where operation_id = :'job'::uuid;
+```
+
+Use the affected officer's email to find the corresponding `revoke` or `update_permissions` access event. The same transaction records `schedule_unassigned` for each affected job. Subsequent `schedule_reassigned` and `schedule_reapproved` events identify the assigning and approving officers.
+
+### Stage 5 local checks
+
+```bash
+node supabase/tests/cms-scheduler.mjs
+node --env-file=.env.local supabase/tests/cms-schedule-ui.mjs
+```
+
+The database check creates and removes a disposable database on the local stack. It uses controlled instants and separate PostgreSQL sessions to exercise folds, gaps, pinning, stale unpublishing, access changes, cancellation, lock ordering, transaction failure and retry. The browser check uses the local fixture Auth setup and the running app. Run it on an idle fixture stack with the polling worker stopped. It schedules a synthetic item, revokes its approver, hands it over from a phone-sized viewport, and interrupts cache delivery between execution and acknowledgement. It archives its item and removes its temporary Auth users.
+
+Both scheduling fixtures passed locally, including cache recovery against the production build. The Stage 1 access, Stage 2 revision and Stage 4 editor regressions, lint, route type generation and TypeScript checks also passed. Live Google sign-in remains deferred pending provider registration.
+
 ## Catalog traceability
 
-Stage numbers identify the planned implementation and the checks that should prove it. Scheduled and content checks below are pending until their stage lands. Stage 7 reruns the integrated local checks.
+Stage numbers identify the implementation and its checks. Public delivery and site settings are scheduled for Stage 6. Stage 7 reruns the integrated local checks.
 
 | Catalog section | Included requirements | Stage and verification |
 | --- | --- | --- |
@@ -200,9 +245,9 @@ Stage numbers identify the planned implementation and the checks that should pro
 | 2 | Events with dates, venue/mode, description, cover and approved registration link; blog entries including Projects, Past Events and Initiatives; Executive Board; partners and sponsors; Zines and downloads; Haribots; approved FAQ; external game title, description, instructions and approved URL | 3–4 · `cms-content-types.sql` covers schemas; Stage 4 connects the editor |
 | 2 | Reusable media; stable content/media IDs across title, slug and URL changes; categories, tags, topics and labels | 2–4, 6 · `cms-content-types.sql`, `cms-revisions.sql` and `cms-media.mjs` cover schemas, IDs and reuse |
 | 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql` verifies transitions and projection; `cms-editor.mjs` covers confirmations and role behavior; public page checks arrive in Stage 6 |
-| 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql` verifies the shared pinned operation and replay; job checks arrive in stage 5 |
+| 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql`, `cms-scheduler.mjs` and `cms-schedule-ui.mjs` cover the operation, concurrent transitions, handover, local runner and cache recovery |
 | 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access and revision fixtures verify snapshots and audit; `cms-media.mjs` verifies file replacement and restoration |
-| 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `supabase/tests/cms-access.sql` and `supabase/tests/cms-local-signin.mjs --verify`; Google activation and live round trip deferred |
+| 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `cms-access.sql`, `cms-local-signin.mjs --verify`, and both Stage 5 checks cover account and queue handover. Google activation and live round trip deferred |
 | 5 | Image upload and selection; metadata and per-use alt text; size/type/content validation; private draft media; public published media; replacement preserves published media; PDF and Zine downloads | 3–4, 6 · `cms-media.mjs` and `cms-content-types.sql` cover validation, storage isolation, replacement and download |
 | 6 | Existing templates for published data; stable human-readable slugs; applicable filters and sorting; bounded pages; minimal public query fields; ordering and featured records; empty, unavailable and 404 states | 6 · local page, filtering, pagination, outage and data exposure fixtures |
 | 6 | Responsive and keyboard access; content canonical, titles, descriptions and shares; published-only sitemap and indexing; redirects; authenticated preview and banner; cache lifetime and refresh | 4, 6–7 · browser walkthrough, metadata/sitemap, redirect, preview and cache checks |

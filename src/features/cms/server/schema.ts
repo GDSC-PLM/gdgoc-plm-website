@@ -52,6 +52,13 @@ export type CmsRevision = CmsRevisionSummary & CmsSnapshot;
 export type CmsEditorItem = Pick<CmsContent, "id" | "draft_revision_id" | "published_revision_id" | "archived_at"> &
   Pick<CmsRevision, "title" | "slug" | "saved_at">;
 export type CmsPublicationAction = "publish" | "unpublish" | "archive";
+export type CmsJob = {
+  seq: number; id: string; content_id: string; area: CmsArea; revision_id: string;
+  version: number; title: string; action: "publish" | "unpublish";
+  due_at: string; local_minute: string; zone: string;
+  status: "ready" | "unassigned" | "awaiting_approval" | "cancelled" | "executed" | "blocked";
+  assignee: string | null; assignee_email: string | null; reason: string | null; refresh_pending: boolean;
+};
 
 export type CmsContentActivity = {
   id: number;
@@ -123,6 +130,10 @@ export type CmsDatabase = {
       cms_create_content: { Args: SnapshotArgs & { p_area: CmsArea }; Returns: string };
       cms_write_draft: { Args: WriteDraftArgs; Returns: string };
       cms_apply_publication: { Args: CmsPublicationArgs; Returns: CmsPublicationEffect[] };
+      cms_schedule: { Args: ContentArgs & { p_action: CmsJob["action"]; p_revision_id: string;
+        p_expected_live: string | null; p_local: string; p_zone: string }; Returns: string };
+      cms_manage_job: { Args: { p_job: string; p_action: "assign" | "approve" | "cancel"; p_email?: string }; Returns: undefined };
+      cms_list_jobs: { Args: { p_closed: boolean; p_before?: number }; Returns: CmsJob[] };
       cms_get_content: { Args: ContentArgs; Returns: CmsContent[] };
       cms_get_revision: { Args: ContentArgs & { p_revision_id: string }; Returns: CmsRevision[] };
       cms_revision_history: { Args: ContentArgs & { p_before_version?: number }; Returns: CmsRevisionSummary[] };

@@ -277,6 +277,7 @@ export function ContentEditor({ area, areaLabel, owner, fullAdmin, initial, rule
                   )}
                   <ConfirmEditorAction label="Archive" description="Remove this record from public view and keep its history. It will be read only."
                     disabled={confirmDisabled} confirm={() => publish("archive")} />
+                  <Link href={"/admin/schedule?content=" + record.id} className={editorButton}>Schedule publication</Link>
                 </div>
               )}
             </section>

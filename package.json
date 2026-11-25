@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "cms:scheduler": "node --env-file=.env.local scripts/cms-scheduler.mjs",
     "brand:generate": "node scripts/generate-brand-assets.mjs"
   },
   "dependencies": {
