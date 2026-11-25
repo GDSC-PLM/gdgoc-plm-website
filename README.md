@@ -4,7 +4,7 @@ Official website of **Google Developer Groups on Campus PLM**, the community at 
 
 Production: [www.gdgocplm.org](https://www.gdgocplm.org/). Built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
-The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. Events, a CMS, login, games, and other roadmap features are not implemented.
+The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS work currently provides approved administrator access. Content editing and publication are covered by later stages in the [CMS guide](docs/cms.md).
 
 ## Local setup
 
@@ -16,11 +16,11 @@ Copy-Item .env.example .env.local
 pnpm dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Fill `.env.local` with your hosted Supabase values if you want the real counter. Restart the server after changing environment variables.
+Open [localhost:3000](http://localhost:3000) for the public site. For CMS work, follow the [local CMS setup](docs/cms.md#run-locally), use the local Supabase API, and open the app at [127.0.0.1:3000](http://127.0.0.1:3000). Restart the server after changing environment variables.
 
 | Variable | Purpose |
 | --- | --- |
-| `SUPABASE_URL` | Hosted Supabase project URL |
+| `SUPABASE_URL` | Supabase API URL for the sparks counter. Use the loopback URL during local development. |
 | `SUPABASE_SECRET_KEY` | Secret server API key; never prefix it with `NEXT_PUBLIC_` |
 
 Never commit `.env.local`, keys, tokens, or database passwords. The homepage works without backend credentials: a fresh counter shows unavailable rather than a fabricated total. Previously cached totals and locally saved taps remain on that browser.
@@ -40,6 +40,8 @@ pnpm start
 Known tooling limitation at this release: the full audit reports [a `braces` advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) in ESLint/shadcn's development-only glob handling. The registry currently offers 3.0.3 and there is no published patch. Production dependencies pass their audit. Recheck before upgrading development tools; do not feed untrusted glob patterns into them. Next.js also emits a Google Sans Flex fallback-metrics warning; the real font loads successfully.
 
 ## Supabase migrations
+
+CMS development uses only the local stack. Follow the [CMS migration and fixture steps](docs/cms.md#run-locally). The linked commands below document the existing counter deployment workflow.
 
 Use the existing intended project. Review its migration history and the dry run before applying anything:
 

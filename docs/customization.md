@@ -81,6 +81,8 @@ Artwork is in `public/landing/`; see [the artwork guide](../public/landing/READM
 
 `src/components/shared/page-template.tsx` supplies the same layout to About, Events, Projects, Blogs, Team, Partners, and Contact. The public route-group layout supplies static clouds/stars and the shared Google Sans Flex font. Its navigation and footer live in `src/components/shared/`. These pages deliberately use `noindex, follow` until real content is available; do not add them to the sitemap yet.
 
+The [local CMS guide](cms.md) tracks the administrator area and the stages that will make public content editable.
+
 ## Search and share identity
 
 `src/lib/site-config.ts` is the source of official names, social/profile links, and the canonical `https://www.gdgocplm.org/` address. `src/lib/site-metadata.ts` creates each route's metadata and the homepage's Organization/WebSite JSON-LD. The visible homepage hero copy is separate on purpose. Changing it is not required to update a search description.
