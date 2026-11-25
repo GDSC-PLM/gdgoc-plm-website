@@ -4,7 +4,7 @@ Official website of **Google Developer Groups on Campus PLM**, the community at 
 
 Production: [www.gdgocplm.org](https://www.gdgocplm.org/). Built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
-The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS work currently provides approved administrator access. Content editing and publication are covered by later stages in the [CMS guide](docs/cms.md).
+The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS has approved administrator access, revision storage, and publication operations. See the [CMS guide](docs/cms.md) for setup and the remaining editor and public page stages.
 
 ## Local setup
 

@@ -1,6 +1,6 @@
 # Local CMS
 
-The CMS is implemented in numbered stages. Stage 1 adds administrator access and the local foundation. Content publication comes in later stages. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
+The CMS is implemented in numbered stages. Stage 1 added administrator access. Stage 2 adds revisions and publication operations. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
 
 ## Run locally
 
@@ -66,7 +66,7 @@ from cms_private.audit order by id desc limit 20;
 
 ## Access boundaries and verification
 
-The admin app uses Supabase Auth PKCE and HTTP-only session cookies scoped to `/admin`. The admission hook permits only a Google identity with a pending, unexpired exact-email invitation. After code exchange an authenticated RPC checks the Google OAuth session and verified provider email before binding the Auth UUID. Every protected app operation uses `requireCmsAccess`, which reads current database access. Future content RPCs and policies use `cms_can_edit(area)` and `cms_can_publish()` for independent enforcement at the data boundary. Access-management RPCs check full administrator status themselves.
+The admin app uses Supabase Auth PKCE and HTTP-only session cookies scoped to `/admin`. The admission hook permits only a Google identity with a pending, unexpired exact-email invitation. After code exchange an authenticated RPC checks the Google OAuth session and verified provider email before binding the Auth UUID. Every protected app operation uses `requireCmsAccess`, which reads current database access. At the data boundary, content reads use `cms_can_edit(area)` and writes lock the actor's current access row and check the operation's permission. Access-management RPCs check full administrator status themselves.
 
 The access, audit and sign-in budget tables are private with RLS and no public policies. Only narrow RPCs are granted to the roles that need them. Public visitors have no sign-in or signup flow. Contributors edit only assigned areas. Full administrators can edit all areas, publish and manage access. The local app limits Google sign-in starts to 30 per minute across the instance. Supabase Auth also applies its own Auth endpoint limits.
 
@@ -83,19 +83,61 @@ The SQL fixture checks admission, expiry, cancellation, verified identity bindin
 
 The additive migration and access fixtures passed on the local Supabase PostgreSQL 17 database. Lint, route type generation, TypeScript and the production build with local font fixtures passed. Loopback HTTP checks passed for anonymous admin redirects, response cache and indexing headers, the callback without a code, and access to the public home page. The one-time fixture link issued an HTTP-only session cookie. Local HTTP and RPC checks confirmed full administrator access, unapproved identity denial, contributor isolation and revocation with the same session. The local test cycle uses fixture sessions while Google registration is pending.
 
+## Stage 2 revision and publication contract
+
+| Private relation | Purpose |
+| --- | --- |
+| `content` | Stable UUID and content area, with one current draft revision, an optional published revision and slug, and archive time. Composite foreign keys tie both pointers to this record. Slugs are unique among live records within an area. |
+| `revisions` | Immutable UUID and per-record version, the complete title, slug and JSON fields, who saved it and when, and an optional source revision for restores. The JSON object is limited to 64 KiB. Stage 3 adds type-specific checks and immutable media references. |
+| `content_audit` | Append-only lifecycle events with actor, time, affected revision and prior live revision. Publication events store the operation UUID and its committed effect for retries. |
+| `mutation_rate` | At most 60 committed content changes per approved actor per minute across create, save, restore, publish, unpublish and archive. Failed transactions and replayed publication operations consume no quota. |
+
+### State transitions
+
+| Operation | Expected state and result |
+| --- | --- |
+| Create | A contributor with area access or a full administrator creates an unpublished record and version 1. Title and slug may be incomplete. |
+| Save or restore | Supply the draft UUID that was open. A row lock serializes writes. A stale request fails with HTTP 409 and the caller reloads. A successful write creates a new UUID and version. Restore copies a revision from the same record. The live pointer stays in place. |
+| Publish | A full administrator supplies the exact draft UUID reviewed and the live UUID observed, or null if unpublished. The chosen revision needs a nonblank title and a valid slug. The transaction updates the live pointer and slug and appends the audit. |
+| Unpublish | Supply the expected live UUID. This clears public visibility and preserves the draft and all revisions. |
+| Archive | Supply both the expected draft UUID and the observed live UUID or null. This clears public visibility, records archive time, and retains protected history. An archived record is read only. |
+
+### Editor, scheduler and cache
+
+The Stage 4 editor calls the server-only functions in `src/features/cms/server/content.ts`. Use `getCmsContent` to get the pointers, `getCmsRevision` to load a snapshot, and `listCmsRevisions` and `listCmsContentActivity` for protected history. History pages hold up to 50 entries. Use the last returned version or event ID as the next page's exclusive cursor. The editor uses `createCmsContent`, `saveCmsDraft` and `restoreCmsDraft` to write. Field-level feedback and confirmation screens arrive with the editor.
+
+Call `applyCmsPublication` from a Server Action for manual publish, unpublish or archive. Supply a fresh operation UUID per confirmed operation, and reuse it with the same arguments if the response is lost. A successful call returns the record UUID, area, action, old and new slugs, and new live revision UUID. A successful replay returns the original effect even if publication has since changed. Reusing the UUID with different arguments fails.
+
+Stage 5 will call the same `cms_private.apply_publication` transaction from its trusted job runner after checking and locking the approved job. Pass the approving actor, a stable operation UUID, the pinned revision for publish, and the expected live UUID from approval. The private pinned mode can publish that revision after a newer draft is saved. It checks the actor's current publishing privilege and rejects a changed live pointer. Keep a job's state and its publication in the same transaction. After commit, the manual and scheduled paths both use `invalidateCmsPublication` to expire the `cms-public` tag, sitemap and admin layout. The caller can repeat invalidation after replay.
+
+The anonymous `cms_read_published` RPC filters on the current live pointer and archive status. Its Stage 2 projection includes only the record UUID, area, title and slug. The public read uses `no-store`. Stage 6 will connect public routes and any tagged projections to this contract.
+
+### Stage 2 local checks
+
+Apply the migration to the local Supabase stack, then run:
+
+```bash
+psql 'postgresql://postgres:postgres@127.0.0.1:54322/postgres' -f supabase/tests/cms-revisions.sql
+node supabase/tests/cms-revisions-concurrency.mjs
+```
+
+The SQL fixture runs on the local Supabase database and rolls back. It checks contributor boundaries, draft isolation, restore, pinned publication, idempotent replay, unpublish, archive, immutable audit and revision history, and the mutation limit. It forces an audit insert failure to demonstrate that the live pointer also rolls back. The concurrency check creates a disposable database on the local instance, waits for a second editor to block on the first editor's row lock, then checks that the second save returns a conflict after the first commits.
+
+The migration and both fixtures passed on local Supabase PostgreSQL 17. A loopback Data API check also confirmed anonymous access to the published projection and denial of protected reads. Lint, route type generation, TypeScript and the isolated Next.js production build with local font fixtures passed.
+
 ## Catalog traceability
 
 Stage numbers identify the planned implementation and the checks that should prove it. Scheduled and content checks below are pending until their stage lands. Stage 7 reruns the integrated local checks.
 
 | Catalog section | Included requirements | Stage and verification |
 | --- | --- | --- |
-| 1 | Create and edit structured records; save incomplete drafts; preserve published data while editing | 2–4 · revision isolation fixtures and editor walkthrough |
+| 1 | Create and edit structured records; save incomplete drafts; preserve published data while editing | 2–4 · `cms-revisions.sql` and `cms-revisions-concurrency.mjs`; typed forms arrive in stages 3–4 |
 | 1 | Required-field errors; unsaved-change warning; Markdown body input; authenticated draft preview; restore earlier revision as new draft | 4 · invalid/unsaved editor walkthrough, preview authorization and restore fixtures |
 | 2 | Events with dates, venue/mode, description, cover and approved registration link; blog entries including Projects, Past Events and Initiatives; Executive Board; partners and sponsors; Zines and downloads; Haribots; approved FAQ; external game title, description, instructions and approved URL | 3–4 · each record type validated and editable through fixtures |
 | 2 | Reusable media; stable content/media IDs across title, slug and URL changes; categories, tags, topics and labels | 2–4, 6 · revision, relationship and URL change fixtures |
-| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · publication transaction, state transition and rendered public fixtures |
-| 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 5 · due-job, pinned revision, revocation, reassignment and idempotent retry fixtures against the same publisher |
-| 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access audit fixture, immutable snapshot and publication audit checks |
+| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql` verifies transitions and projection; confirmation and rendered checks arrive in stages 4 and 6 |
+| 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql` verifies the shared pinned operation and replay; job checks arrive in stage 5 |
+| 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access and revision fixtures verify immutable snapshots and publication audit; media checks arrive in stage 3 |
 | 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `supabase/tests/cms-access.sql` and `supabase/tests/cms-local-signin.mjs --verify`; Google activation and live round trip deferred |
 | 5 | Image upload and selection; metadata and per-use alt text; size/type/content validation; private draft media; public published media; replacement preserves published media; PDF and Zine downloads | 3–4, 6 · file rejection, storage isolation, replacement and published download fixtures |
 | 6 | Existing templates for published data; stable human-readable slugs; applicable filters and sorting; bounded pages; minimal public query fields; ordering and featured records; empty, unavailable and 404 states | 6 · local page, filtering, pagination, outage and data exposure fixtures |
