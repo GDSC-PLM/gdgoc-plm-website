@@ -2,6 +2,8 @@
 
 Recorded 2026-10-19, Asia/Manila. Canonical site: https://www.gdgocplm.org/.
 
+This is the historical pre-CMS release record. See the [local CMS acceptance record](cms-acceptance.md) for the current CMS branch and verification steps.
+
 ## Completed checkpoints
 
 1. Official search/share identity, typed profile configuration, server-rendered organization data, icon sizes, minimal static share image, and a shared cosmic placeholder for seven unfinished routes.

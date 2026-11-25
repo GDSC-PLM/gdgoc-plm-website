@@ -5,6 +5,7 @@ import { chromium } from "playwright-core";
 import { PDFDocument } from "pdf-lib";
 import sharp from "sharp";
 import { accept, checked, cleanupAuthFixtures, fixture } from "./cms-local-signin.mjs";
+import { api, db } from "./local.mjs";
 
 const port = Number(process.env.CMS_TEST_APP_PORT ?? 3000);
 assert(Number.isInteger(port) && port >= 1024 && port < 65536);
@@ -12,13 +13,13 @@ const site = "http://127.0.0.1:" + port;
 const unique = "public-" + randomUUID();
 const created = [];
 const sql = query => execFileSync("psql", ["-XqAt", "-v", "ON_ERROR_STOP=1",
-  "postgresql://postgres:postgres@127.0.0.1:54322/postgres", "-c", query], { encoding: "utf8" }).trim();
+  db + "postgres", "-c", query], { encoding: "utf8" }).trim();
 let admin;
 let cleanupOfficer;
 
 const rpc = async (method, args, account = admin) => checked(await account.client.rpc(method, args), method);
 async function anonRpc(method, args) {
-  const response = await fetch("http://127.0.0.1:54321/rest/v1/rpc/" + method, {
+  const response = await fetch(api + "/rest/v1/rpc/" + method, {
     method: "POST", redirect: "error", signal: AbortSignal.timeout(5000),
     headers: { apikey: process.env.CMS_SUPABASE_PUBLISHABLE_KEY, "content-type": "application/json" },
     body: JSON.stringify(args),
@@ -211,7 +212,7 @@ try {
 
   await officer.goto(site + "/admin/content/settings/new");
   await officer.getByLabel("Homepage headline, first line").fill("Preview-only headline");
-  await officer.getByLabel("Navigation rows").fill("Calendar | /events | show\nStories | /blogs | hide");
+  await officer.getByLabel("Navigation rows").fill("Calendar | /events | show\nStories | /blogs | hide\nThe Board | /team | show");
   await officer.getByLabel("Footer link rows").fill("Local questions | /faq");
   await officer.getByLabel("Social link rows").fill("instagram | https://www.instagram.com/gdg_plm\nfacebook | https://www.facebook.com/gdgplm");
   await officer.getByLabel("Contact email").fill("officers@example.invalid");
@@ -241,10 +242,24 @@ try {
   assert(home.indexOf("Instagram") < home.indexOf("Facebook"));
   const navigation = await (await get("/events")).text();
   assert(navigation.includes("Calendar") && !navigation.includes(">Stories<"));
+  assert(navigation.indexOf(">Calendar<") < navigation.indexOf(">The Board<"));
   assert.equal((await get("/blogs")).status, 200);
   assert((await (await get("/contact")).text()).includes("Fixture office hours."));
   const sitemap = await (await get("/sitemap.xml")).text();
   assert(sitemap.includes(newPath) && !sitemap.includes(oldPath + "</loc>") && !sitemap.includes("/admin"));
+
+  await officer.getByLabel("Homepage headline, first line").fill("Second settings draft");
+  await officer.getByLabel("Navigation rows").fill("The Board | /team | show\nAgenda | /events | show");
+  await officer.getByRole("button", { name: "Save draft" }).click();
+  await officer.getByRole("status").filter({ hasText: "Draft saved." }).waitFor();
+  const settingsDraft = await state(settingsId);
+  assert.notEqual(settingsDraft.draft_revision_id, settingsDraft.published_revision_id);
+  const stillLive = await (await get("/")).text();
+  assert(stillLive.includes(">Calendar<") && !stillLive.includes(">Agenda<"));
+  assert(stillLive.includes("Preview-only headline") && !stillLive.includes("Second settings draft"));
+  await officer.getByRole("link", { name: "Preview saved draft" }).click();
+  await officer.getByRole("heading", { name: /Second settings draft/ }).waitFor();
+  await officer.getByRole("link", { name: "Agenda", exact: true }).waitFor();
 
   const removalDate = "2099-07-10T10:30";
   const liveRevision = (await state(event.id)).published_revision_id;

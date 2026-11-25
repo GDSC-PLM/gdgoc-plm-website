@@ -12,8 +12,8 @@ Run `pnpm brand:generate` from the repository root after editing the SVG. It use
 | `public/brand/icon-192.png` | 192px manifest icon |
 | `public/brand/icon-512.png` | 512px manifest icon |
 | `public/brand/gdg-mark-512.png` | Transparent 512px organization logo for structured data |
-| `src/app/opengraph-image.png` | Static 1200 × 630 social preview shared by Open Graph and Twitter |
+| `public/opengraph-image.png` | Static 1200 × 630 fallback social preview for Open Graph and Twitter |
 
-Edit composition, typography, and colors in `scripts/generate-brand-assets.mjs`. Keep `src/app/opengraph-image.alt.txt` and metadata descriptions accurate. All generated files are committed, so neither ordinary builds nor page requests fetch fonts for image generation.
+Edit composition, typography and colors in `scripts/generate-brand-assets.mjs`. Update the fallback image alt text in `src/lib/site-metadata.ts` to match the image. The committed assets let builds and requests use the generated images directly.
 
 These assets represent GDGoC PLM using its supplied GDG artwork; this repository does not claim ownership of Google's trademarks.

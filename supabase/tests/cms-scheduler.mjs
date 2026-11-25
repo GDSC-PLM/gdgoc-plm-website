@@ -3,8 +3,8 @@ import { execFileSync, spawn } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { readdirSync } from "node:fs";
 import { setTimeout as delay } from "node:timers/promises";
+import { db as base } from "./local.mjs";
 
-const base = "postgresql://postgres:postgres@127.0.0.1:54322/";
 const db = "cms_schedule_" + randomUUID().replaceAll("-", "");
 const flags = ["-X", "-qAt", "-v", "ON_ERROR_STOP=1"];
 const sql = (query, database = db) => execFileSync("psql", [...flags, base + database], {

@@ -1,10 +1,11 @@
 import { createHmac } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
+import { loopbackHttp } from "../src/lib/local-http.mjs";
 
-const api = "http://127.0.0.1:54321";
+const api = process.env.CMS_SUPABASE_URL;
 const secret = process.env.CMS_SUPABASE_SECRET_KEY;
 const port = Number(process.env.CMS_SCHEDULER_APP_PORT ?? 3000);
-if (process.env.CMS_SUPABASE_URL !== api || !secret || !Number.isInteger(port) || port < 1 || port > 65535) {
+if (!loopbackHttp(api) || !secret || !Number.isInteger(port) || port < 1 || port > 65535) {
   throw new Error("Check the local CMS Supabase configuration and application port.");
 }
 const args = process.argv.slice(2);

@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { PDFDocument, PDFName } from "pdf-lib";
 import sharp from "sharp";
 import { accept, checked, cleanupAuthFixtures, fixture } from "./cms-local-signin.mjs";
+import { api } from "./local.mjs";
 
 const port = Number(process.env.CMS_TEST_APP_PORT ?? "3000");
 assert(Number.isInteger(port) && port >= 1024 && port < 65536);
@@ -115,7 +116,7 @@ async function verify() {
   const first = await create("events", "media-first-" + run, eventFields(old, "Red event art"));
   await publish(first);
   assert.deepEqual(await bytes(await publicFile(old), "image/png"), original);
-  const direct = await fetch("http://127.0.0.1:54321/storage/v1/object/authenticated/cms-media/" + old.version_id, {
+  const direct = await fetch(api + "/storage/v1/object/authenticated/cms-media/" + old.version_id, {
     headers: { apikey: process.env.CMS_SUPABASE_PUBLISHABLE_KEY }, signal: AbortSignal.timeout(5000),
   });
   assert.equal(direct.ok, false, "direct anonymous Storage access stays blocked while published");

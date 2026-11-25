@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { chromium } from "playwright-core";
 import sharp from "sharp";
 import { accept, checked, cleanupAuthFixtures, fixture } from "./cms-local-signin.mjs";
+import { api } from "./local.mjs";
 
 const port = Number(process.env.CMS_TEST_APP_PORT ?? 3000);
 assert(Number.isInteger(port) && port >= 1024 && port < 65536);
@@ -45,7 +46,7 @@ async function confirm(page, label) {
 }
 
 async function projection() {
-  const response = await fetch("http://127.0.0.1:54321/rest/v1/rpc/cms_read_published", {
+  const response = await fetch(api + "/rest/v1/rpc/cms_read_published", {
     method: "POST",
     headers: { apikey: process.env.CMS_SUPABASE_PUBLISHABLE_KEY, "content-type": "application/json" },
     body: JSON.stringify({ p_content_id: id }), signal: AbortSignal.timeout(5000),
@@ -117,6 +118,11 @@ try {
   const uploadMessage = uploaded.headers()["content-type"]?.includes("application/json") && !uploaded.ok()
     ? (await uploaded.json()).error : "";
   assert.equal(uploaded.status(), 201, uploadMessage + " (origin " + await uploaded.request().headerValue("origin") + ")");
+  const version = (await uploaded.json()).version_id;
+  const publicFile = origin + "/api/cms/media/" + version;
+  const publicPage = origin + "/events/" + slug;
+  const checkPublic = url => fetch(url, { headers: { "user-agent": "Googlebot" }, redirect: "manual", signal: AbortSignal.timeout(10000) });
+  assert.equal((await checkPublic(publicFile)).status, 404);
   await mobile.getByText("File uploaded and selected. Save the draft to keep this selection.").waitFor();
   await mobile.getByLabel("Cover alt text").fill("Lavender fixture image");
   await mobile.getByRole("button", { name: "Save draft" }).click();
@@ -135,6 +141,7 @@ try {
   assert.equal(await mobile.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
   if (process.env.CMS_TEST_CAPTURE === "1") await mobile.screenshot({ path: "/tmp/gdgoc-cms-preview-mobile.png" });
   assert.deepEqual(await projection(), []);
+  assert.equal((await checkPublic(publicPage)).status, 404);
   const anonymous = await contextFor(null);
   await anonymous.goto(origin + preview);
   assert.match(anonymous.url(), /\/admin\/login/);
@@ -158,23 +165,36 @@ try {
   await desktop.getByText("Published. This is the current published revision.").waitFor();
   const live = (await record()).published_revision_id;
   assert.equal((await projection())[0]?.title, name);
+  await anonymous.goto(publicPage);
+  await anonymous.getByRole("heading", { name, exact: true }).waitFor();
+  await anonymous.getByAltText("Lavender fixture image").waitFor();
+  assert.equal((await checkPublic(publicFile)).status, 200);
 
   await confirm(desktop, "Restore revision 1");
   await desktop.getByText("Revision restored as a new draft. The published version is unchanged.").waitFor();
   assert.equal((await record()).published_revision_id, live);
   assert.equal((await projection())[0]?.title, name);
+  assert.match(await (await checkPublic(publicPage)).text(), /Lavender fixture image/);
   await desktop.getByRole("button", { name: "Unpublish", exact: true }).click();
   await desktop.getByRole("dialog", { name: "Unpublish" }).getByRole("button", { name: "Cancel" }).click();
   assert.equal((await record()).published_revision_id, live);
   await confirm(desktop, "Unpublish");
   await desktop.getByText("Unpublished. The saved draft is still available.").waitFor();
   assert.deepEqual(await projection(), []);
+  assert.equal((await checkPublic(publicPage)).status, 404);
+  assert.equal((await checkPublic(publicFile)).status, 404);
   await confirm(desktop, "Archive");
   await desktop.getByText("Archived. Revision history is retained.").waitFor();
   assert.equal(await desktop.getByRole("button", { name: "Save draft" }).count(), 0);
   await desktop.getByRole("link", { name: "Preview revision 1" }).waitFor();
+  assert.equal((await checkPublic(publicPage)).status, 404);
+  await desktop.goto(origin + "/admin");
+  await desktop.getByRole("button", { name: "Sign out", exact: true }).click();
+  await desktop.waitForURL("**/admin/login");
+  await desktop.goto(origin + preview);
+  assert.match(desktop.url(), /\/admin\/login/);
 
-  console.log("Passed editor browsing, contributor restrictions, mobile sizing, keyboard/dialog focus, recovery, field errors, Markdown, media selection, preview isolation, restore, publish, unpublish and archive.");
+  console.log("Passed scoped contributor editing through live rendering, media, preview, restore, unpublish/archive, and officer sign-out with keyboard and mobile checks.");
 } finally {
   await browser.close();
   try {

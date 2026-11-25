@@ -5,10 +5,8 @@ import { createServer } from "node:http";
 import { pathToFileURL } from "node:url";
 import { createServerClient, serializeCookieHeader } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
+import { api, app as site, db } from "./local.mjs";
 
-const db = "postgresql://postgres:postgres@127.0.0.1:54322/postgres";
-const api = "http://127.0.0.1:54321";
-const site = "http://127.0.0.1:3000";
 const helper = "http://127.0.0.1:3399";
 const key = process.env.CMS_SUPABASE_PUBLISHABLE_KEY;
 const secret = process.env.CMS_SUPABASE_SECRET_KEY;
@@ -25,7 +23,7 @@ const operator = createClient(api, secret, {
 const accounts = [];
 
 function sql(input) {
-  execFileSync("psql", ["-X", "-q", "-v", "ON_ERROR_STOP=1", db], { input, stdio: ["pipe", "ignore", "inherit"] });
+  execFileSync("psql", ["-X", "-q", "-v", "ON_ERROR_STOP=1", db + "postgres"], { input, stdio: ["pipe", "ignore", "inherit"] });
 }
 
 export function checked(result, step) {

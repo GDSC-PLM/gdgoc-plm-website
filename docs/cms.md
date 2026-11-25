@@ -1,6 +1,6 @@
 # Local CMS
 
-Stages 1–6 provide administrator access, immutable revisions, fixed content types and media, an editor with private previews, scheduled publishing with officer handover, and public delivery with editable site settings. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
+The CMS provides administrator access, immutable revisions, fixed content types and media, an editor with private previews, scheduled publishing with officer handover, and public delivery with editable site settings. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope. Stage 7 records acceptance against every included requirement. [Acceptance record and checklist](cms-acceptance.md)
 
 ## Run locally
 
@@ -24,7 +24,7 @@ The placeholders let the local Auth service and provider-independent checks run 
 pnpm dev --hostname 127.0.0.1
 ```
 
-Open [the local admin page](http://127.0.0.1:3000/admin). Use the exact loopback origin throughout OAuth so PKCE cookies remain available. CMS configuration accepts the local API URL `http://127.0.0.1:54321`. The additive migration preserves counter tables and migration history. Fixture checks roll back their transaction.
+Open [the local admin page](http://127.0.0.1:3000/admin). Use that exact app origin throughout OAuth so PKCE cookies remain available. The CMS API defaults to `http://127.0.0.1:54321` in the example environment. The CMS and scheduler accept an explicit HTTP port on `127.0.0.1`, so acceptance can use a separate local stack. The migrations preserve counter tables and migration history.
 
 ### Sign in with a dummy account for local testing
 
@@ -280,22 +280,6 @@ Run the browser check on an idle fixture stack with local fixture Auth enabled, 
 
 Local verification passed for each content type, preview authorization and isolation, share metadata, stable-ID links, pagination, keyboard access, mobile sizing, settings publication, immutable media, and scheduled unpublishing. The separate app showed unavailable states for lists and details. The production build, lint, route type generation, TypeScript, and access, revisions, schema, editor, media, and scheduler regression checks passed.
 
-## Catalog traceability
+## Repeat local acceptance
 
-Stage numbers identify the implementation and its checks. Stage 7 reruns the integrated local checks.
-
-| Catalog section | Included requirements | Stage and verification |
-| --- | --- | --- |
-| 1 | Create and edit structured records; save incomplete drafts; preserve published data while editing | 2–4 · `cms-revisions.sql` and `cms-revisions-concurrency.mjs`; typed forms arrive in stages 3–4 |
-| 1 | Required-field errors; unsaved-change warning; Markdown body input; authenticated draft preview; restore earlier revision as new draft | 4 · `cms-editor.mjs` exercises the browser workflow |
-| 2 | Events with dates, venue/mode, description, cover and approved registration link; blog entries including Projects, Past Events and Initiatives; Executive Board; partners and sponsors; Zines and downloads; Haribots; approved FAQ; external game title, description, instructions and approved URL | 3–4 · `cms-content-types.sql` covers schemas; Stage 4 connects the editor |
-| 2 | Reusable media; stable content/media IDs across title, slug and URL changes; categories, tags, topics and labels | 2–4, 6 · `cms-content-types.sql`, `cms-revisions.sql` and `cms-media.mjs` cover schemas, IDs and reuse |
-| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql`, `cms-editor.mjs` and `cms-public.mjs` cover state changes, role behavior and public routes |
-| 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql`, `cms-scheduler.mjs` and `cms-schedule-ui.mjs` cover the operation, concurrent transitions, handover, local runner and cache recovery |
-| 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access and revision fixtures verify snapshots and audit; `cms-media.mjs` verifies file replacement and restoration |
-| 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `cms-access.sql`, `cms-local-signin.mjs --verify`, and both Stage 5 checks cover account and queue handover. Google activation and live round trip deferred |
-| 5 | Image upload and selection; metadata and per-use alt text; size/type/content validation; private draft media; public published media; replacement preserves published media; PDF and Zine downloads | 3–4, 6 · `cms-media.mjs` and `cms-content-types.sql` cover validation, storage isolation, replacement and download |
-| 6 | Existing templates for published data; stable human-readable slugs; applicable filters and sorting; bounded pages; minimal public query fields; ordering and featured records; empty, unavailable and 404 states | 6 · `cms-public.mjs`, projection grants and an app without CMS configuration |
-| 6 | Responsive and keyboard access; content canonical, titles, descriptions and shares; published-only sitemap and indexing; redirects; authenticated preview and banner; cache lifetime and refresh | 4, 6–7 · `cms-editor.mjs` and `cms-public.mjs` exercise browser, metadata, preview, redirects and scheduled refresh |
-| 7 | Draft/publish/preview for navigation, footer and contact, social links and order, homepage text and featured content; menu changes preserve route destinations | 6 · `cms-public.mjs` checks settings draft isolation, route continuity and published visibility |
-| 8 | Validate and authorize server input; least-privilege table and storage policies; keep keys out of browser and logs; actor/time audit; rate limits for sign-in, uploads and mutations | 1–7 · access fixture, scoped input and grants checks, upload/mutation limits and bundle/output inspection |
+Run `pnpm cms:acceptance` to build and exercise the CMS against a separate disposable database, Auth service and Storage bucket. The operating stack can keep running. [Acceptance record and per-requirement traceability](cms-acceptance.md)

@@ -2,6 +2,7 @@ import "server-only";
 
 import { createServerClient, type CookieOptions, type SetAllCookies } from "@supabase/ssr";
 import { cookies } from "next/headers";
+import { loopbackHttp } from "@/lib/local-http.mjs";
 import type { CmsDatabase } from "./schema";
 
 export const cmsOrigin = "http://127.0.0.1:3000";
@@ -10,7 +11,7 @@ export const cmsCookieName = "gdgoc-cms-auth";
 export function cmsSupabaseConfig() {
   const url = process.env.CMS_SUPABASE_URL;
   const key = process.env.CMS_SUPABASE_PUBLISHABLE_KEY;
-  if (url !== "http://127.0.0.1:54321" || !key) return null;
+  if (!url || !loopbackHttp(url) || !key) return null;
   return { url, key };
 }
 

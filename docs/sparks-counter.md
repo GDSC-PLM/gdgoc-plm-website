@@ -12,6 +12,8 @@ Failed batches stay saved and retry with the same stream ID and sequence target.
 
 `GET /api/hype?streamId=<uuid>` and `POST /api/hype` with JSON `{ "streamId": "<uuid>", "through": 10 }` return `{ "count": number, "acknowledgedThrough": number }`. GET reads both values in one snapshot. POST derives the increment from the stored checkpoint, accepts at most 10 new taps, and commits the counter and acknowledgement atomically. Plain GET and body-free POST remain compatible with older clients. Invalid/oversized payloads return `400`, foreign origins `403`, missing browser cookies `409`, throttling `429`, and unavailable databases `503`. Responses are not cached.
 
+The tap endpoint compares the browser origin with the HTTP request's host and scheme and checks the browser's fetch-site header when present. Local acceptance checks that a tap on `127.0.0.1` succeeds, a replay keeps the same total, and cross-origin taps are rejected. [CMS acceptance](cms-acceptance.md)
+
 
 ## Verification record
 

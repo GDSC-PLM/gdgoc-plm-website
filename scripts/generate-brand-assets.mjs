@@ -66,7 +66,7 @@ async function writeShareImage() {
   createElement("div", { style: { display: "flex", marginTop: 12, fontSize: 76, letterSpacing: "-0.035em" } }, "GDGoC PLM"));
   const response = new ImageResponse(element, { width: 1200, height: 630, fonts: [{ name: "Google Sans Flex", data: font, weight: 600, style: "normal" }] });
   const png = Buffer.from(await response.arrayBuffer());
-  await sharp(png).png({ compressionLevel: 9 }).toFile(fileURLToPath(asset("src/app/opengraph-image.png")));
+  await sharp(png).png({ compressionLevel: 9 }).toFile(fileURLToPath(asset("public/opengraph-image.png")));
 }
 
 await mkdir(asset("public/brand/"), { recursive: true });

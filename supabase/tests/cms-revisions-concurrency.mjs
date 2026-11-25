@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import { execFileSync, spawn } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import { setTimeout as delay } from "node:timers/promises";
+import { db as host } from "./local.mjs";
 
-const host = "postgresql://postgres:postgres@127.0.0.1:54322/";
 const scratch = "cms_concurrency_" + randomBytes(8).toString("hex");
 const actor = "21000000-0000-4000-8000-000000000002";
 const login = `

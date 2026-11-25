@@ -29,10 +29,13 @@ function getBrowserId(request: NextRequest): string | undefined {
 }
 
 function isSameOrigin(request: NextRequest): boolean {
+  const host = request.headers.get("host");
   const origin = request.headers.get("origin");
   const fetchSite = request.headers.get("sec-fetch-site");
 
-  return origin === request.nextUrl.origin && (!fetchSite || fetchSite === "same-origin");
+  // Next's URL can carry the server's listen hostname instead of the browser-facing host.
+  return Boolean(host) && origin === request.nextUrl.protocol + "//" + host &&
+    (!fetchSite || fetchSite === "same-origin");
 }
 
 async function readBatch(request: NextRequest): Promise<HypeBatch | null> {

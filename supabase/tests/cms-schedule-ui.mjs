@@ -4,13 +4,14 @@ import { randomUUID } from "node:crypto";
 import { resolve } from "node:path";
 import { chromium } from "playwright-core";
 import { accept, checked, cleanupAuthFixtures, fixture } from "./cms-local-signin.mjs";
+import { db } from "./local.mjs";
 
 const port = Number(process.env.CMS_TEST_APP_PORT ?? 3000);
 assert(Number.isInteger(port) && port > 0 && port < 65536);
 const origin = "http://127.0.0.1:" + port;
 const title = "Scheduler fixture " + randomUUID();
 const sql = query => execFileSync("psql", ["-XqAt", "-v", "ON_ERROR_STOP=1",
-  "postgresql://postgres:postgres@127.0.0.1:54322/postgres", "-c", query], { encoding: "utf8" }).trim();
+  db + "postgres", "-c", query], { encoding: "utf8" }).trim();
 const rpc = async (account, method, args) => checked(await account.client.rpc(method, args), method);
 const run = appPort => spawnSync(process.execPath, [resolve("scripts/cms-scheduler.mjs"), "--once"], {
   encoding: "utf8", timeout: 30000, env: { ...process.env, CMS_SCHEDULER_APP_PORT: String(appPort) },

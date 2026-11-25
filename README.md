@@ -37,22 +37,11 @@ pnpm start
 
 `next typegen` prepares route types for a fresh clone. TypeScript and lint checks run separately; a successful build is not a substitute for either. `pnpm audit --prod` checks shipped dependencies; `pnpm audit` also includes development tools.
 
-Known tooling limitation at this release: the full audit reports [a `braces` advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) in ESLint/shadcn's development-only glob handling. The registry currently offers 3.0.3 and there is no published patch. Production dependencies pass their audit. Recheck before upgrading development tools; do not feed untrusted glob patterns into them. Next.js also emits a Google Sans Flex fallback-metrics warning; the real font loads successfully.
+The local acceptance build uses fixture font responses and may emit the Google Sans Flex fallback-metrics warning. The earlier dependency audit is recorded separately. [October 2026 release verification](docs/release-verification.md)
 
 ## Supabase migrations
 
-CMS development uses only the local stack. Follow the [CMS migration and fixture steps](docs/cms.md#run-locally). The linked commands below document the existing counter deployment workflow.
-
-Use the existing intended project. Review its migration history and the dry run before applying anything:
-
-```powershell
-pnpm dlx supabase@2.121.0 login
-pnpm dlx supabase@2.121.0 link --project-ref YOUR_PROJECT_REF
-pnpm dlx supabase@2.121.0 migration list --linked
-pnpm dlx supabase@2.121.0 db push --linked --dry-run --skip-vault
-pnpm dlx supabase@2.121.0 db push --linked --skip-vault
-pnpm dlx supabase@2.121.0 db advisors --linked --type security --level warn --fail-on error
-```
+Apply CMS migrations to the loopback stack. Follow the [CMS migration and fixture steps](docs/cms.md#run-locally).
 
 The first migration creates the counter/rate-limit tables. The second adds durable queue checkpoints and idempotent batch functions. The release permissions migration restricts the hosted automatic-RLS helper when it exists. Additive updates preserve the current total; do not reset the hosted database or rerun the initialization SQL manually.
 
@@ -71,8 +60,9 @@ The [counter guide](docs/sparks-counter.md) explains limits, API responses, reco
 
 | Change | Edit |
 | --- | --- |
-| Official names, canonical address, metadata, social/profile URLs | `src/lib/site-config.ts` |
-| Visible homepage copy and artwork paths | `src/app/_landing/landing-config.ts` |
+| Official names, canonical address, metadata and default profile links | `src/lib/site-config.ts` |
+| Published navigation, contact, social links and homepage copy | **Site settings** in the CMS |
+| Default homepage copy and artwork paths | `src/app/_landing/landing-config.ts` |
 | Font shared by homepage and public pages | `src/app/fonts.ts` |
 | About and Contact fallback presentation | `src/components/shared/page-template.tsx` |
 | Reusable logo source | `public/brand/gdg-mark.svg` |
@@ -88,10 +78,10 @@ Search metadata identifies the official organization independently of the creati
 1. Use the Next.js framework preset with the lockfile and the normal build command. Install development dependencies during the build; the shadcn CSS import is build-time tooling.
 2. Configure both Supabase variables as private production environment variables. Confirm migration parity and a clean security check before serving counter traffic.
 3. Connect `www.gdgocplm.org`, ensure HTTPS works, and redirect the bare domain to the canonical `www` hostname in the hosting dashboard. DNS/hosting changes are separate from this repository.
-4. Confirm `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest`, favicon, Apple icon, share image, canonical URLs, and all eight public routes on the deployed domain.
+4. Confirm `/robots.txt`, `/sitemap.xml`, `/manifest.webmanifest`, favicon, Apple icon, share image, canonical URLs, and the baseline public routes on the deployed domain.
 5. Check 1440 × 686, 393px and 320px phones, short landscape, enlarged text, keyboard activation, and reduced motion. Mock API writes when testing bursts; do not inflate the public count.
 6. After deployment, verify ownership in Search Console and submit `https://www.gdgocplm.org/sitemap.xml`. Indexing and rankings are not immediate or guaranteed.
 
 Pushing `main` may trigger the connected Vercel deployment. This repository does not install analytics or automate deployment, DNS changes, or Search Console submissions.
 
-See [release verification](docs/release-verification.md) for the final checks and complete file inventory.
+The repeatable CMS acceptance command is `pnpm cms:acceptance`. It builds and tests against a disposable loopback stack. See the [acceptance record and catalog checklist](docs/cms-acceptance.md). The [October 2026 release verification](docs/release-verification.md) records the pre-CMS website release.
