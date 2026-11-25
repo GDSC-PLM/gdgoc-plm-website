@@ -4,7 +4,7 @@ Official website of **Google Developer Groups on Campus PLM**, the community at 
 
 Production: [www.gdgocplm.org](https://www.gdgocplm.org/). Built with Next.js App Router, React, TypeScript, Tailwind CSS, and Supabase.
 
-The homepage features the interactive origami bird and a shared, buffered sparks counter. About, Events, Projects, Blogs, Team, Partners, and Contact currently share a branded placeholder and stay out of search until their content is ready. The local CMS includes a scoped editor, private previews, revision history, protected media and scheduled publication. See the [CMS guide](docs/cms.md) for setup and editor workflows. Start the [local scheduler](docs/cms.md#run-and-observe-the-local-scheduler) in a second terminal with `pnpm cms:scheduler`.
+The homepage features the interactive origami bird and a shared, buffered sparks counter. The local CMS supplies published content to public collections and detail pages. Officers can edit navigation, contact, social links and homepage content through the same draft and publication workflow. See the [CMS guide](docs/cms.md#stage-6-public-routes-and-site-settings). Start the local scheduler in a second terminal with `pnpm cms:scheduler`.
 
 ## Local setup
 
@@ -60,7 +60,7 @@ Counter tables have RLS enabled and are accessed only through the server secret 
 
 ## Architecture and data flow
 
-- The Server Component homepage supplies artwork and copy to the client landing experience. Shared placeholder pages stay server-rendered and do not mount the interactive counter.
+- The server-rendered homepage supplies artwork and published copy to the client landing experience. The other public pages and the private settings preview leave the counter inactive.
 - Bird activation → IndexedDB local save → immediate rolling number/reaction → batch API request → atomic Supabase increment/checkpoint → reconciliation.
 - One sender per browser queue coordinates tabs. Batches contain at most 10 taps; retries retain the same identity and sequence, preventing duplicate additions after lost responses.
 - The anonymous HTTP-only cookie limits bursts, not unique people. IndexedDB retains pending taps; deleting site data or browser eviction can remove them. No email signup, analytics, or service worker is installed.
@@ -73,15 +73,15 @@ The [counter guide](docs/sparks-counter.md) explains limits, API responses, reco
 | --- | --- |
 | Official names, canonical address, metadata, social/profile URLs | `src/lib/site-config.ts` |
 | Visible homepage copy and artwork paths | `src/app/_landing/landing-config.ts` |
-| Font shared by homepage and placeholders | `src/app/fonts.ts` |
-| Shared placeholder presentation | `src/components/shared/page-template.tsx` |
+| Font shared by homepage and public pages | `src/app/fonts.ts` |
+| About and Contact fallback presentation | `src/components/shared/page-template.tsx` |
 | Reusable logo source | `public/brand/gdg-mark.svg` |
 
 The [customization guide](docs/customization.md) retains exact spacing, colors, bird size, motion timing, milestones, and focus controls. The [artwork guide](public/landing/README.md) lists the original Figma exports. Tailwind utilities only: no CSS Modules, component stylesheets, or custom keyframes.
 
 `pnpm brand:generate` regenerates checked-in favicon/icon variants and the static 1200 × 630 share image using existing tooling. It downloads the source Google Sans Flex font only during regeneration; builds and requests do not regenerate these images. See [brand assets](public/brand/README.md).
 
-Search metadata identifies the official organization independently of the creative hero wording. The homepage includes Organization/WebSite JSON-LD and a self-canonical URL. The sitemap contains only `/`; placeholders use `noindex, follow`. Vercel preview/development builds disable indexing. No made-up events, reviews, statistics, or hidden keyword sections are added.
+Search metadata identifies the official organization independently of the creative hero wording. The homepage includes Organization/WebSite JSON-LD and a self-canonical URL. The sitemap includes the homepage and indexable published CMS URLs. Empty and placeholder pages stay out of search. Vercel preview and development builds disable indexing.
 
 ## Production checklist
 

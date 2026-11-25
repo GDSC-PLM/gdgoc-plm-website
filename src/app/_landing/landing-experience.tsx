@@ -6,6 +6,7 @@ import { HypeCounter, type HypeLabels } from "@/features/hype/components/hype-co
 import { useHypeCounter } from "@/features/hype/use-hype-counter";
 
 type LandingExperienceProps = {
+  preview?: boolean;
   branding: ReactNode;
   socials: ReactNode;
   bird: ReactNode;
@@ -62,8 +63,8 @@ const birdMotionTiming = {
   stretch: { holdMs: 280, restMs: 900 },
 } satisfies Record<BirdMotion, { holdMs: number; restMs: number }>;
 
-export function LandingExperience({ branding, socials, bird, surprises, hintArtwork, copy, backdrop, labels }: LandingExperienceProps) {
-  const counter = useHypeCounter();
+export function LandingExperience({ branding, socials, bird, surprises, hintArtwork, copy, backdrop, labels, preview }: LandingExperienceProps) {
+  const counter = useHypeCounter(!preview);
   const { canTap } = counter;
   const [birdPose, setBirdPose] = useState<BirdPose>("rest");
   const [motionAllowed, setMotionAllowed] = useState(false);
@@ -424,7 +425,7 @@ export function LandingExperience({ branding, socials, bird, surprises, hintArtw
 
       <main className="z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 pb-26 text-center max-md:py-2 [@media(max-height:450px)]:pb-6" aria-labelledby="landing-title">
         <div className="relative z-10 mb-1 w-full md:absolute md:top-(--page-top) md:left-1/2 md:mb-0 md:w-[clamp(12rem,23vw,20rem)] md:-translate-x-1/2">
-          <HypeCounter labels={labels} state={counter} motionAllowed={motionAllowed} />
+          {!preview && <HypeCounter labels={labels} state={counter} motionAllowed={motionAllowed} />}
         </div>
         <div className="relative mx-auto grid h-(--bird-height) w-(--bird-width) place-items-center" data-hype-stage>
           {surprises}

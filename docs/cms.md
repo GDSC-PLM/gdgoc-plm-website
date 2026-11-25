@@ -1,6 +1,6 @@
 # Local CMS
 
-Stages 1–5 provide administrator access, immutable revisions, fixed content types and media, an editor with private previews, and scheduled publishing with officer handover. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
+Stages 1–6 provide administrator access, immutable revisions, fixed content types and media, an editor with private previews, scheduled publishing with officer handover, and public delivery with editable site settings. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
 
 ## Run locally
 
@@ -110,7 +110,7 @@ Call `applyCmsPublication` from a Server Action for manual publish, unpublish or
 
 The scheduler calls `cms_private.apply_publication` with the current approving officer, job UUID, pinned revision for publish, and expected live UUID. The transaction checks current publishing authority, applies the change and records its audit and queue outcome together. Manual and scheduled paths both call `invalidateCmsPublication` to expire the `cms-public` tag, sitemap and admin layout. The scheduler persists outstanding refreshes across process restarts.
 
-The anonymous `cms_read_published` RPC filters on the current live pointer and archive status. Its Stage 2 projection includes only the record UUID, area, title and slug. The public read uses `no-store`. Stage 6 will connect public routes and any tagged projections to this contract.
+The anonymous `cms_read_published` RPC retains its original projection of the current public record UUID, area, title and slug. Site templates use the purpose-specific projections described below.
 
 ### Stage 2 local checks
 
@@ -140,7 +140,7 @@ The title and slug belong to each revision. The content UUID stays the same when
 | FAQ | Question as title and Markdown `answer`. A full administrator approves it by publishing. | Common fields below. |
 | External games | Title, `description`, `instructions`, and approved HTTPS `outboundUrl`. | Image `cover`. |
 
-Common optional fields are `category` (free label outside blogs), `tags` and `topics` (up to 12 labels of up to 40 characters each), `statusLabel`, integer `sortOrder` from 0 to 9999, boolean `featured`, `metaTitle` (70 characters), `metaDescription` (170), and `socialImage`. The Settings area gets its own schema in Stage 6. The descriptors in `cms_private.content_schema` define field types and lengths. Stage 4 can load them using `getCmsContentSchema(area)` and use the field key supplied with database validation errors.
+Common optional fields are `category` (free label outside blogs), `tags` and `topics` (up to 12 labels of up to 40 characters each), `statusLabel`, integer `sortOrder` from 0 to 9999, boolean `featured`, `metaTitle` (70 characters), `metaDescription` (170), and `socialImage`. Site settings use their own schema. The descriptors in `cms_private.content_schema` define field types and lengths. The editor loads them using `getCmsContentSchema(area)` and displays validation errors on the relevant field.
 
 Registration accepts only HTTPS Google Forms (`forms.gle` and `docs.google.com/forms/`) and Luma (`lu.ma` and `luma.com`). Games accept HTTPS itch.io (the main host or one subdomain), `gd.games`, and `www.newgrounds.com/portal/view/` entries. Full administrators review the destination at publication. The CMS stores outbound links and never fetches them. Additional providers require a reviewed change to the allowlist.
 
@@ -151,7 +151,7 @@ Registration accepts only HTTPS Google Forms (`forms.gle` and `docs.google.com/f
 - Upload via `POST /admin/media?area=events`, with the file as the raw body, its MIME in `Content-Type`, and its percent-encoded filename in `X-File-Name`. Supply `&mediaId=<UUID>` for replacement. A successful upload returns the media and version IDs and file metadata. The request must come from the local app origin. Authorized attempts consume a budget of eight per actor per minute before the file is read.
 - JPEG, PNG, and WebP accept up to 5 MiB and 4096 pixels per edge, with at most 12 megapixels. The server checks the signature and decodes and re-encodes the image as a still image, stripping embedded metadata. Zine PDFs accept up to 10 MiB and 200 pages. The server parses the PDF, rejects encrypted and interactive features such as scripts, launch actions, forms and embedded files, and serves accepted PDFs as attachments. This is file validation and does not include malware scanning. SVG, HTML, executable and other file formats are outside the allowlist.
 - Storage uses the private `cms-media` bucket. Direct reads and writes, including signed URL creation, are blocked for anonymous and authenticated roles. The server validates bytes before storing a new object at the version UUID with overwrite disabled. Only the server role can record validated metadata, and the database rechecks current actor scope and the stored object. An interrupted upload can leave an unreferenced private object. Retained versions are never removed by the application.
-- Use `GET /admin/media/<versionId>` for scoped preview and `GET /api/cms/media/<versionId>` for public delivery. The public route checks that a current published revision references the version. Both routes verify the stored digest before serving bytes and use `no-store`. Unpublishing or archiving the last live reference makes the file private on the next request. Stage 6 can use the public version URL without exposing a Storage URL or secret.
+- Use `GET /admin/media/<versionId>` for scoped preview and `GET /api/cms/media/<versionId>` for public delivery. The public route checks that a current published revision references the version. Both routes verify the stored digest before serving bytes and use `no-store`. Unpublishing or archiving the last live reference makes the file private on the next request. Public templates use the version URL and keep Storage credentials on the server.
 
 ### Stage 3 local checks
 
@@ -172,7 +172,7 @@ The typed schema and revision fixtures passed on local Supabase. The HTTP check 
 1. Sign in at `/admin` with an approved account or use the local fixture login above. Open a content area and select an existing item or **New draft**. Contributors see only their assigned areas. Full administrators see all eight content areas and **Manage administrator access** for invitations, permission changes and revocation. The database operator recovery procedure remains available in this guide.
 2. Complete the fields you have and choose **Save draft**. Fields marked required for publication can be left unfinished on a draft. Incorrect values are shown next to the field. The Markdown toolbar inserts headings, emphasis, lists and HTTPS links. Preview rendering ignores raw HTML and does not render embedded Markdown images or scripts. Use the media fields for images and PDFs.
 3. In a media field, select a reusable file or expand **Upload a file**. To keep the media ID while adding a version, select an existing file and choose **Upload as replacement**. Add alt text that describes the image in this use, or leave it blank for a decorative image. Save the draft to record the file selection and alt text.
-4. Open **Preview saved draft** to review the last save. The preview banner identifies the revision. **History** links to earlier saved snapshots and lets an editor restore one as a new draft. Restoring keeps the existing published version. Preview is scoped to the signed-in account, uses the shared content renderer and private media route, is excluded from indexing, and sends `no-store`. The current public pages remain placeholders until Stage 6.
+4. Open **Preview saved draft** to review the last save. The preview banner identifies the revision. **History** links to earlier saved snapshots and lets an editor restore one as a new draft. Restoring keeps the existing published version. Preview is scoped to the signed-in account, uses the public detail template with private media URLs, is excluded from indexing, and sends `no-store`.
 5. Full administrators can confirm **Publish**, **Unpublish**, or **Archive** from the saved editor state. **Cancel** and Escape close the confirmation. Publish checks the required fields and uses the shared transactional publication operation. Unpublish keeps the draft and history. Archive clears public visibility and makes the record read only, with review still available through the archived section.
 
 The editor warns before following links or leaving with unsaved changes. On browsers that support session storage, a reload in the same tab under the same account can offer **Recover unsaved edits** if the saved revision has not changed. The copy contains form values and selected media IDs, so an unuploaded local file still needs to be selected again. Saving clears the copy. If another editor saved first, copy any text you need before reloading, then review the latest draft before reapplying it. Closing a tab can discard its recovery data.
@@ -234,9 +234,55 @@ The database check creates and removes a disposable database on the local stack.
 
 Both scheduling fixtures passed locally, including cache recovery against the production build. The Stage 1 access, Stage 2 revision and Stage 4 editor regressions, lint, route type generation and TypeScript checks also passed. Live Google sign-in remains deferred pending provider registration.
 
+## Stage 6 public routes and site settings
+
+| Collection | List URL | Detail URL |
+| --- | --- | --- |
+| Events | `/events` | `/events/<slug>` |
+| Projects | `/projects` | `/projects/<slug>` |
+| Past event recaps and initiatives | `/blogs` | `/blogs/<slug>` |
+| Executive Board | `/team` | `/team/<slug>` |
+| Partners and sponsors | `/partners` | `/partners/<slug>` |
+| Zines | `/zines` | `/zines/<slug>` |
+| Haribots | `/haribots` | `/haribots/<slug>` |
+| FAQ | `/faq` | `/faq/<slug>` |
+| External games | `/games` | `/games/<slug>` |
+
+The homepage `/` renders the existing landing experience. The site settings also supply navigation, footer and `/contact`. About retains its existing page. The default footer links to the smaller collections. Each detail uses the published title and slug, SEO fields or a content-derived description, and the published sharing image, cover, photo or logo when available. Otherwise it uses the site sharing image. The sitemap includes the homepage, populated collections, configured contact page and canonical published detail URLs. The sitemap projection is read in batches of 500 and capped at 49,500 detail entries. Empty collections, filter results, secondary list pages and preview URLs carry noindex. Preview and development deployment contexts disable indexing.
+
+Lists display 12 records per page up to page 100. Events filter by upcoming or past in relation to their end time, or start time when there is no end time. The date selector changes chronological order within featured and manual ordering groups. Blogs filter by recap or initiative. Partners filter by partner or sponsor. Featured records lead the list, followed by ascending manual order and the collection’s default sort. Zines sort by newest release date, blog and project entries by newest saved published revision, and other lists by title unless a date sort applies. Stable IDs break ties.
+
+Published slugs remain reserved to their original record. Old slugs redirect to the current canonical URL while the record is live. A category change between Projects and Blogs can redirect across those collection paths. Both current and former paths return 404 after unpublishing or archiving. For any conflicting slugs predating this migration, the live owner takes precedence, followed by the most recent historical publication. An unavailable database shows a retry state on content pages. The landing page and site chrome use their checked-in defaults.
+
+### Cache and preview
+
+Every server request checks current publication for detail URLs, including aliases. Lists, homepage settings and featured links, sitemap and public media also read current published state with a zero cache lifetime. Rendered CMS pages are request-time responses. Once a fresh lookup identifies the live immutable revision, the detail body may be reused for 300 seconds under the `cms-public` tag. The shared publication operation clears the tag and revalidates the sitemap on manual publish, unpublish and archive. The scheduler runs the same invalidation with the retry behavior described above. An already open document reflects new publication state when it reloads or requests the page again.
+
+Preview loads a private saved snapshot after checking current editor scope, uses the same detail template and serves files through `/admin/media`. Settings previews render the real homepage, navigation, footer and contact components with the draft values and a banner. They do not start the sparks counter. Preview responses are private and use `no-store`. Public file delivery checks the exact version against a currently published reference on every request. A replacement remains private until publication. After the last live reference is removed, the old bytes are private on the next request. The public RPCs expose dedicated list, detail, settings, featured and sitemap projections without draft fields or private officer data.
+
+### Edit site settings
+
+Full administrators open **Site settings** on the CMS dashboard. Start the first draft with the supplied defaults. One active settings record holds the editable fields. Save the draft, review **Preview saved draft**, then publish or schedule through the regular approval controls. Earlier settings can be restored to a new draft through **History**. Unpublishing or archiving the settings restores the checked-in defaults.
+
+- Navigation uses one `label | /route | show` or `label | /route | hide` row per approved destination. The route registry stays independent of this menu, so label changes, reordering, hiding and removal leave destination URLs intact.
+- Footer links use `label | /route` or `label | https://…`. Contact information supports safe Markdown and a separate email address.
+- Official social links use `platform | https://…` for `facebook`, `instagram`, `tiktok` or `community`. The server validates the platform host. The row order applies to the homepage and footer.
+- Edit the two headline lines, description and short label in the homepage fields. Feature up to six entries in the order you enter their stable UUIDs. Copy an ID from the item’s editor URL. An entry appears only while it has a live revision, and a changed slug automatically updates its link.
+- A blank link list uses the defaults. Enter a single hyphen to publish an empty list. For an optional text field, leaving it blank uses the original homepage wording or leaves the contact field absent.
+
+### Stage 6 local checks
+
+```bash
+node --env-file=.env.local supabase/tests/cms-public.mjs
+```
+
+Run the browser check on an idle fixture stack with local fixture Auth enabled, no active settings entry and the polling worker stopped. It uses synthetic records and private fixture accounts, submits the settings editor, verifies real Storage and the local scheduler, and mocks the sparks endpoint in Chrome. The fixture archives its content and removes temporary accounts. Use a local production build to check indexing and sitemap behavior. A second local app with CMS configuration unset can verify the unavailable state without stopping the database.
+
+Local verification passed for each content type, preview authorization and isolation, share metadata, stable-ID links, pagination, keyboard access, mobile sizing, settings publication, immutable media, and scheduled unpublishing. The separate app showed unavailable states for lists and details. The production build, lint, route type generation, TypeScript, and access, revisions, schema, editor, media, and scheduler regression checks passed.
+
 ## Catalog traceability
 
-Stage numbers identify the implementation and its checks. Public delivery and site settings are scheduled for Stage 6. Stage 7 reruns the integrated local checks.
+Stage numbers identify the implementation and its checks. Stage 7 reruns the integrated local checks.
 
 | Catalog section | Included requirements | Stage and verification |
 | --- | --- | --- |
@@ -244,12 +290,12 @@ Stage numbers identify the implementation and its checks. Public delivery and si
 | 1 | Required-field errors; unsaved-change warning; Markdown body input; authenticated draft preview; restore earlier revision as new draft | 4 · `cms-editor.mjs` exercises the browser workflow |
 | 2 | Events with dates, venue/mode, description, cover and approved registration link; blog entries including Projects, Past Events and Initiatives; Executive Board; partners and sponsors; Zines and downloads; Haribots; approved FAQ; external game title, description, instructions and approved URL | 3–4 · `cms-content-types.sql` covers schemas; Stage 4 connects the editor |
 | 2 | Reusable media; stable content/media IDs across title, slug and URL changes; categories, tags, topics and labels | 2–4, 6 · `cms-content-types.sql`, `cms-revisions.sql` and `cms-media.mjs` cover schemas, IDs and reuse |
-| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql` verifies transitions and projection; `cms-editor.mjs` covers confirmations and role behavior; public page checks arrive in Stage 6 |
+| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql`, `cms-editor.mjs` and `cms-public.mjs` cover state changes, role behavior and public routes |
 | 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql`, `cms-scheduler.mjs` and `cms-schedule-ui.mjs` cover the operation, concurrent transitions, handover, local runner and cache recovery |
 | 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access and revision fixtures verify snapshots and audit; `cms-media.mjs` verifies file replacement and restoration |
 | 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `cms-access.sql`, `cms-local-signin.mjs --verify`, and both Stage 5 checks cover account and queue handover. Google activation and live round trip deferred |
 | 5 | Image upload and selection; metadata and per-use alt text; size/type/content validation; private draft media; public published media; replacement preserves published media; PDF and Zine downloads | 3–4, 6 · `cms-media.mjs` and `cms-content-types.sql` cover validation, storage isolation, replacement and download |
-| 6 | Existing templates for published data; stable human-readable slugs; applicable filters and sorting; bounded pages; minimal public query fields; ordering and featured records; empty, unavailable and 404 states | 6 · local page, filtering, pagination, outage and data exposure fixtures |
-| 6 | Responsive and keyboard access; content canonical, titles, descriptions and shares; published-only sitemap and indexing; redirects; authenticated preview and banner; cache lifetime and refresh | 4, 6–7 · browser walkthrough, metadata/sitemap, redirect, preview and cache checks |
-| 7 | Draft/publish/preview for navigation, footer and contact, social links and order, homepage text and featured content; menu changes preserve route destinations | 6 · settings snapshot, preview authorization, ordering and route continuity fixtures |
+| 6 | Existing templates for published data; stable human-readable slugs; applicable filters and sorting; bounded pages; minimal public query fields; ordering and featured records; empty, unavailable and 404 states | 6 · `cms-public.mjs`, projection grants and an app without CMS configuration |
+| 6 | Responsive and keyboard access; content canonical, titles, descriptions and shares; published-only sitemap and indexing; redirects; authenticated preview and banner; cache lifetime and refresh | 4, 6–7 · `cms-editor.mjs` and `cms-public.mjs` exercise browser, metadata, preview, redirects and scheduled refresh |
+| 7 | Draft/publish/preview for navigation, footer and contact, social links and order, homepage text and featured content; menu changes preserve route destinations | 6 · `cms-public.mjs` checks settings draft isolation, route continuity and published visibility |
 | 8 | Validate and authorize server input; least-privilege table and storage policies; keep keys out of browser and logs; actor/time audit; rate limits for sign-in, uploads and mutations | 1–7 · access fixture, scoped input and grants checks, upload/mutation limits and bundle/output inspection |

@@ -248,10 +248,10 @@ export function ContentEditor({ area, areaLabel, owner, fullAdmin, initial, rule
                   onChange={(event) => change("slug", event.target.value)} />
               </div>
               {fields.filter((key) => !isSecondary(key)).map(renderField)}
-              <details className="min-w-0 rounded-md border p-4">
+              {fields.some(isSecondary) && <details className="min-w-0 rounded-md border p-4">
                 <summary className="cursor-pointer rounded-sm font-semibold focus-visible:outline-2 focus-visible:outline-primary">Taxonomy, display and metadata</summary>
                 <div className="mt-4 space-y-5">{fields.filter(isSecondary).map(renderField)}</div>
-              </details>
+              </details>}
             </fieldset>
           </form>
         )}

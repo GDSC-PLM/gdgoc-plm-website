@@ -8,9 +8,12 @@ import { LandingExperience } from "@/app/_landing/landing-experience";
 import { OrigamiBird } from "@/app/_landing/origami-bird";
 import { cn } from "@/lib/utils";
 import type { SocialPlatform } from "@/lib/site-config";
+import type { SiteSettings } from "@/features/cms/site-settings";
 
 type LandingHeroProps = {
   className: string;
+  settings?: SiteSettings;
+  preview?: boolean;
 };
 
 const socialIconPaths: Record<SocialPlatform, string> = {
@@ -23,8 +26,10 @@ const socialIconPaths: Record<SocialPlatform, string> = {
 const textEntrance = "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-3 motion-safe:fill-mode-backwards motion-safe:duration-400 motion-safe:ease-[cubic-bezier(0.16,1,0.3,1)] motion-safe:group-data-[entered=true]/sky:animate-none";
 const headlineDelays = ["motion-safe:delay-320", "motion-safe:delay-390"] as const;
 
-export function LandingHero({ className }: LandingHeroProps) {
-  const { assets, brand, campus, counter, description, followLabel, organization, program, socialLinks, status, title } = landingConfig;
+export function LandingHero({ className, settings, preview }: LandingHeroProps) {
+  const { assets, brand, campus, counter, followLabel, organization, program } = landingConfig;
+  const { title, status, description } = settings ?? landingConfig;
+  const socialLinks = settings?.socials ?? landingConfig.socialLinks;
   const socialIconClass = "grid size-11 place-items-center rounded-full text-(--muted-lavender)";
 
   return (
@@ -45,6 +50,7 @@ export function LandingHero({ className }: LandingHeroProps) {
       data-landing
     >
       <LandingExperience
+        preview={preview}
         labels={counter}
         backdrop={<LandingBackdrop />}
         bird={<OrigamiBird />}
@@ -74,7 +80,7 @@ export function LandingHero({ className }: LandingHeroProps) {
         }
         socials={
           <div className="flex max-w-full flex-wrap items-center justify-center gap-x-2 md:justify-end" data-landing-socials>
-            <p className="text-xs leading-normal text-(--muted-lavender)">{followLabel}</p>
+            {socialLinks.length > 0 && <p className="text-xs leading-normal text-(--muted-lavender)">{followLabel}</p>}
             <ul className="flex max-w-full flex-wrap items-center justify-end" aria-label="Social media">
               {socialLinks.map(({ platform, label, href }) => {
                 const icon = (
@@ -102,9 +108,9 @@ export function LandingHero({ className }: LandingHeroProps) {
         }
         copy={
           <>
-            <p className={cn("mt-(--bird-copy-gap) mb-(--eyebrow-gap) rounded-full border border-(--lavender)/20 bg-(--lavender)/5 px-3 py-1 text-[0.625rem] leading-normal font-medium tracking-[0.14em] text-(--lavender) uppercase", textEntrance, "motion-safe:delay-250")}>{status}</p>
+            {status && <p className={cn("mt-(--bird-copy-gap) mb-(--eyebrow-gap) rounded-full border border-(--lavender)/20 bg-(--lavender)/5 px-3 py-1 text-[0.625rem] leading-normal font-medium tracking-[0.14em] text-(--lavender) uppercase", textEntrance, "motion-safe:delay-250")}>{status}</p>}
             <h1 id="landing-title" className="max-w-full text-(length:--heading-size) leading-[1.12] font-semibold tracking-[-0.025em] [overflow-wrap:anywhere]">
-              {title.map((line, index) => <span className={cn("block", textEntrance, headlineDelays[index])} key={line}>{line}</span>)}
+              {title.map((line, index) => <span className={cn("block", textEntrance, headlineDelays[index])} key={index}>{line}</span>)}
             </h1>
             <p className={cn("mt-(--description-gap) max-w-[28rem] text-(length:--description-size) leading-relaxed text-balance text-(--muted-lavender)", textEntrance, "motion-safe:delay-460")}>
               {description}

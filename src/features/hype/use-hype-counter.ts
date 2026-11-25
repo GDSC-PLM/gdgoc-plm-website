@@ -24,7 +24,7 @@ function retryDelay(header: string | null): number {
   return Number.isFinite(seconds) ? Math.max(0, seconds * 1_000) : Math.max(0, Date.parse(header) - Date.now()) || 0;
 }
 
-export function useHypeCounter(): HypeCounterState {
+export function useHypeCounter(enabled = true): HypeCounterState {
   const [count, setCount] = useState<number | null>(null);
   const [status, setStatus] = useState<CounterStatus>("loading");
   const [feedback, setFeedback] = useState<HypeFeedback>(null);
@@ -42,6 +42,7 @@ export function useHypeCounter(): HypeCounterState {
   }, []);
 
   useEffect(() => {
+    if (!enabled) return;
     active.current = true;
     let disposed = false;
     let running = false;
@@ -143,7 +144,7 @@ export function useHypeCounter(): HypeCounterState {
       window.removeEventListener("pageshow", wakeSender);
       void releaseLease(owner).catch(() => {});
     };
-  }, [publish]);
+  }, [enabled, publish]);
 
   const queueTap = useCallback(async (): Promise<boolean> => {
     if (!active.current) return false;

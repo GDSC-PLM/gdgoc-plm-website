@@ -43,7 +43,7 @@ export default async function AreaPage({ params }: PageProps<"/admin/content/[ar
       <Link href="/admin" className={editorLink}>CMS dashboard</Link>
       <header className="flex flex-wrap items-end justify-between gap-4 border-b pb-4">
         <h1 className="text-3xl font-semibold tracking-tight">{cmsAreaLabels[area]}</h1>
-        <a href={base + "/new"} className={editorPrimary}>New draft</a>
+        {(area !== "settings" || active.length === 0) && <a href={base + "/new"} className={editorPrimary}>New draft</a>}
       </header>
       {active.length ? <ItemList items={active} base={base} /> : (
         <p className="rounded-md border bg-muted/40 p-4 text-sm">No active content here yet. Start with a new draft.</p>

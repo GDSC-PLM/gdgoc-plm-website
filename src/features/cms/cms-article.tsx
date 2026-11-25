@@ -42,6 +42,8 @@ export function CmsArticle({ area, snapshot, mediaRoot }: {
     text("category")?.replaceAll("-", " "), text("statusLabel"), text("kind"), text("role"), text("issueLabel"),
   ].filter(Boolean);
   const registration = text("startsAt");
+  const labels = [fields.tags, fields.topics].flatMap(value => Array.isArray(value)
+    ? value.filter((label): label is string => typeof label === "string") : []);
 
   return (
     <article className="mx-auto w-full max-w-3xl space-y-7 px-5 py-10 text-[#eeeaf7] sm:px-8 sm:py-14">
@@ -74,6 +76,9 @@ export function CmsArticle({ area, snapshot, mediaRoot }: {
           {pdf && <a href={mediaRoot + "/" + pdf.versionId} className="rounded-md border border-[#b6a1dc]/40 px-4 py-3 text-sm font-semibold underline hover:bg-[#b6a1dc]/10">Download PDF</a>}
         </div>
       )}
+      {labels.length > 0 && <ul aria-label="Tags and topics" className="flex flex-wrap gap-2 text-sm text-[#d0c2e8]">
+        {[...new Set(labels)].map(label => <li key={label} className="max-w-full rounded-full border border-[#b6a1dc]/25 px-3 py-1 break-words">{label}</li>)}
+      </ul>}
     </article>
   );
 }

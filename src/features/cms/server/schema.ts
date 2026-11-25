@@ -31,6 +31,12 @@ export type CmsSnapshot = {
   fields: Record<string, CmsJson>;
 };
 
+export type CmsPublicRoute = { id: string; collection: string; slug: string };
+export type CmsPublicCard = CmsPublicRoute & {
+  title: string; category: string | null; summary: string | null; image: CmsJson;
+  featured: boolean; event_date: string | null;
+};
+
 export type CmsContent = {
   id: string;
   area: CmsArea;
@@ -100,7 +106,7 @@ export type CmsPublicationArgs = ContentArgs & {
 export type CmsFieldRule =
   | { type: "line" | "markdown"; max: number; required?: boolean }
   | { type: "choice"; values: string[]; required?: boolean }
-  | { type: "labels" | "order" | "boolean" | "instant" | "date" | "https" | "registration" | "game" | "image" | "pdf";
+  | { type: "labels" | "order" | "boolean" | "instant" | "date" | "https" | "registration" | "game" | "image" | "pdf" | "rows";
       required?: boolean };
 
 export type CmsMediaMime = "image/jpeg" | "image/png" | "image/webp" | "application/pdf";
@@ -139,6 +145,12 @@ export type CmsDatabase = {
       cms_revision_history: { Args: ContentArgs & { p_before_version?: number }; Returns: CmsRevisionSummary[] };
       cms_content_activity: { Args: ContentArgs & { p_before_event?: number }; Returns: CmsContentActivity[] };
       cms_read_published: { Args: ContentArgs; Returns: CmsPublishedContent[] };
+      cms_public_lookup: { Args: { p_collection: string; p_slug: string }; Returns: (CmsPublicRoute & { revision_id: string })[] };
+      cms_public_article: { Args: { p_revision: string }; Returns: CmsSnapshot[] };
+      cms_public_list: { Args: { p_collection: string; p_filter: string; p_sort: string; p_page: number }; Returns: CmsPublicCard[] };
+      cms_public_featured: { Args: { p_ids: string[] }; Returns: (CmsPublicRoute & { title: string })[] };
+      cms_public_settings: { Args: NoArgs; Returns: CmsSnapshot["fields"] | null };
+      cms_public_sitemap: { Args: { p_after?: string }; Returns: (CmsPublicRoute & { saved_at: string })[] };
       cms_list_editor_content: { Args: { p_area: CmsArea; p_after_id?: string }; Returns: CmsEditorItem[] };
       cms_content_schema: { Args: { p_area: CmsArea }; Returns: Record<string, CmsFieldRule> | null };
       cms_authorize_upload: { Args: { p_area: CmsArea; p_media_id: string | null }; Returns: undefined };

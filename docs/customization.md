@@ -77,11 +77,11 @@ Activation → `queueTap()` commits to IndexedDB → immediate number/bird react
 Artwork is in `public/landing/`; see [the artwork guide](../public/landing/README.md) for exports and replacement instructions. Existing public-page styles are independent of the landing styles.
 
 
-## Shared placeholder pages
+## Public templates and editable content
 
-`src/components/shared/page-template.tsx` supplies the same layout to About, Events, Projects, Blogs, Team, Partners, and Contact. The public route-group layout supplies static clouds/stars and the shared Google Sans Flex font. Its navigation and footer live in `src/components/shared/`. These pages deliberately use `noindex, follow` until real content is available; do not add them to the sitemap yet.
+`src/components/shared/page-template.tsx` supplies the placeholder for About and the fallback for Contact. The public shell supplies clouds, stars and the Google Sans Flex font. The CMS collections and shared article template live in `src/features/cms/`. Published site settings control navigation and footer content through the shared components.
 
-Officers can prepare and preview content in the editor, publish immediately, or schedule a saved revision for a specific time. See the [editor workflow](cms.md#stage-4-editor-and-private-preview) and the [scheduling and handover guide](cms.md#stage-5-scheduled-publications). The public content pages will consume that content in Stage 6.
+Officers can prepare and preview content, update the homepage and site links, publish immediately, or schedule a saved revision. See the [CMS route map and settings workflow](cms.md#stage-6-public-routes-and-site-settings).
 
 ## Search and share identity
 

@@ -23,7 +23,7 @@ export default async function DraftPage({ params, searchParams }: PageProps<"/ad
     getCmsRevision(id, record.draft_revision_id),
     listCmsRevisions(id, cursor(query.beforeRevision)),
     listCmsContentActivity(id, cursor(query.beforeActivity)),
-    record.archived_at ? [] : listEditorMedia(area),
+    record.archived_at || area === "settings" ? [] : listEditorMedia(area),
   ]);
   if (!rules || !draft) notFound();
 

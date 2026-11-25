@@ -1,7 +1,7 @@
 import { cmsAreas, type CmsArea, type CmsFieldRule, type CmsJson, type CmsSnapshot } from "./server/schema";
 
-export type EditorArea = Exclude<CmsArea, "settings">;
-export const editorAreas = cmsAreas.filter((area): area is EditorArea => area !== "settings");
+export type EditorArea = CmsArea;
+export const editorAreas = cmsAreas;
 export const isEditorArea = (area: unknown): area is EditorArea =>
   typeof area === "string" && editorAreas.some((value) => value === area);
 
@@ -18,6 +18,10 @@ const fieldOrder = ["category", "kind", "role", "startsAt", "endsAt", "mode", "v
   "cover", "photo", "logo", "download", ...optionalFields];
 
 const labels: Record<string, string> = {
+  headlineFirst: "Homepage headline, first line", headlineSecond: "Homepage headline, second line",
+  homeDescription: "Homepage description", homeStatus: "Homepage short label", navigation: "Navigation rows",
+  footerLinks: "Footer link rows", socials: "Social link rows", contactEmail: "Contact email",
+  contactText: "Contact information", homeFeatured: "Featured content IDs",
   startsAt: "Starts at", endsAt: "Ends at", releaseDate: "Release date", issueLabel: "Issue label",
   registrationUrl: "Registration URL", websiteUrl: "Website URL", outboundUrl: "Game URL",
   statusLabel: "Status label", sortOrder: "Sort order", metaTitle: "SEO title",
@@ -49,6 +53,8 @@ export function editorValues(rules: FieldRules, draft?: CmsSnapshot): EditorValu
       const use = value === undefined ? null : mediaUse(value);
       values[key] = use?.versionId ?? "";
       if (rule.type === "image") values[key + ".alt"] = use?.alt ?? "";
+    } else if (rule.type === "rows" && Array.isArray(value)) {
+      values[key] = value.length ? value.map(row => Array.isArray(row) ? row.join(" | ") : "").join("\n") : "-";
     } else if (Array.isArray(value)) {
       values[key] = value.filter((part) => typeof part === "string").join(", ");
     } else if (value !== null && typeof value !== "object" && value !== undefined) {
@@ -102,6 +108,11 @@ export function parseEditorValues(rules: FieldRules, values: unknown, area: Edit
     } else if (rule.type === "line" || rule.type === "markdown") {
       if (Array.from(value).length > rule.max) errors[key] = "Use at most " + rule.max + " characters.";
       else fields[key] = rule.type === "line" ? trimmed : value;
+    } else if (rule.type === "rows") {
+      const rows = trimmed === "-" ? [] : trimmed.split("\n").filter(row => row.trim()).map(row => row.split("|").map(part => part.trim()));
+      const columns = key === "navigation" ? 3 : key === "homeFeatured" ? 1 : 2;
+      if (rows.some(row => row.length !== columns || row.some(part => !part))) errors[key] = "Check the format of each row.";
+      else fields[key] = rows;
     } else if (rule.type === "labels") {
       const labels = value.split(",").map((label) => label.trim()).filter(Boolean);
       if (labels.length > 12 || labels.some((label) => Array.from(label).length > 40)) {

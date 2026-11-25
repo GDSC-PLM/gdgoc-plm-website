@@ -3,17 +3,7 @@ import Link from "next/link";
 
 import { siteConfig } from "@/lib/site-config";
 
-const navigationItems = [
-  { href: "/about", label: "About" },
-  { href: "/events", label: "Events" },
-  { href: "/projects", label: "Projects" },
-  { href: "/blogs", label: "Blogs" },
-  { href: "/team", label: "Team" },
-  { href: "/partners", label: "Partners" },
-  { href: "/contact", label: "Contact" },
-];
-
-export function Navbar() {
+export function Navbar({ items }: { items: { href: string; label: string }[] }) {
   return (
     <header className="border-b border-[#b6a1dc]/10">
       <nav
@@ -25,8 +15,8 @@ export function Navbar() {
           {siteConfig.name}
         </Link>
         <div className="flex flex-wrap gap-x-4 text-sm text-[#a39bb5]">
-          {navigationItems.map((item) => (
-            <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-sm transition-colors hover:text-[#eeeaf7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b6a1dc]">
+          {items.map((item) => (
+            <Link key={item.href} href={item.href} prefetch={false} className="inline-flex min-h-11 items-center rounded-sm transition-colors hover:text-[#eeeaf7] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b6a1dc]">
               {item.label}
             </Link>
           ))}

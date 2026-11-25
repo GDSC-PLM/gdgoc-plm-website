@@ -37,6 +37,13 @@ export function EditorField({ name, rule, value, error, change }: EditorFieldPro
     rule.type === "instant" && "Include a UTC offset, for example 2026-12-11T18:30+08:00.",
     rule.type === "labels" && "Separate labels with commas.",
     name === "venue" && "Required for in-person and hybrid events.",
+    rule.type === "rows" && ({
+      navigation: "One row per link in display order. Format: label | /route | show or hide.",
+      footerLinks: "One row per link in display order. Format: label | /route or HTTPS URL.",
+      socials: "One row per link in display order. Format: facebook, instagram, tiktok or community | official HTTPS URL.",
+      homeFeatured: "Enter up to six content IDs from editor URLs, one per line in display order. Only live records are shown.",
+    }[name as "navigation" | "footerLinks" | "socials" | "homeFeatured"] ?? ""),
+    rule.type === "rows" && "Enter a single hyphen to clear the list.",
   ].filter(Boolean).join(" ");
   const a11y = { id, "aria-invalid": error ? true : undefined, "aria-describedby": error || hint ? id + "-help" : undefined };
   const source = useRef<HTMLTextAreaElement>(null);
@@ -85,6 +92,9 @@ export function EditorField({ name, rule, value, error, change }: EditorFieldPro
           <textarea {...a11y} ref={source} rows={7} className={editorInput + " resize-y"} value={value}
             onChange={(event) => change(event.target.value)} />
         </>
+      ) : rule.type === "rows" ? (
+        <textarea {...a11y} rows={5} className={editorInput + " resize-y"} value={value}
+          onChange={(event) => change(event.target.value)} />
       ) : rule.type === "choice" ? (
         <select {...a11y} className={editorInput} value={value} onChange={(event) => change(event.target.value)}>
           <option value="">Select an option</option>
