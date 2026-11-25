@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { createServer } from "node:http";
+import { pathToFileURL } from "node:url";
 import { createServerClient, serializeCookieHeader } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 
@@ -27,12 +28,12 @@ function sql(input) {
   execFileSync("psql", ["-X", "-q", "-v", "ON_ERROR_STOP=1", db], { input, stdio: ["pipe", "ignore", "inherit"] });
 }
 
-function checked(result, step) {
+export function checked(result, step) {
   if (result.error) throw new Error(step + " failed (" + (result.error.code ?? result.error.message) + ").");
   return result.data;
 }
 
-async function fixture(role) {
+export async function fixture(role) {
   const email = "cms-" + role + "-" + randomUUID() + "@example.invalid";
   const password = randomUUID() + randomUUID();
   const { user } = checked(await operator.auth.admin.createUser({
@@ -78,7 +79,7 @@ async function fixture(role) {
   };
 }
 
-async function accept(account, expected) {
+export async function accept(account, expected) {
   assert.equal(checked(await account.client.rpc("cms_accept_invitation"), "Check fixture invitation"), expected);
 }
 
@@ -169,19 +170,25 @@ async function serve() {
   console.log("Open this one-time local sign-in link: " + await loginLink(account));
 }
 
-if (mode === "--verify") {
-  try {
-    await verify();
-  } finally {
-    for (const { id, email } of accounts.reverse()) {
-      sql(`begin;
-        delete from cms_private.audit where target_email = '${email}';
-        delete from cms_private.access where email = '${email}';
-        delete from auth.refresh_tokens where user_id = '${id}';
-        delete from auth.users where id = '${id}' and email = '${email}';
-        commit;`);
-    }
+export function cleanupAuthFixtures() {
+  for (const { id, email } of accounts.splice(0).reverse()) {
+    sql(`begin;
+      delete from cms_private.audit where target_email = '${email}';
+      delete from cms_private.access where email = '${email}';
+      delete from auth.refresh_tokens where user_id = '${id}';
+      delete from auth.users where id = '${id}' and email = '${email}';
+      commit;`);
   }
-} else {
-  await serve();
+}
+
+if (process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url) {
+  if (mode === "--verify") {
+    try {
+      await verify();
+    } finally {
+      cleanupAuthFixtures();
+    }
+  } else {
+    await serve();
+  }
 }

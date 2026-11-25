@@ -88,6 +88,26 @@ export type CmsPublicationArgs = ContentArgs & {
   p_expected_published_id: string | null;
 };
 
+export type CmsFieldRule =
+  | { type: "line" | "markdown"; max: number; required?: boolean }
+  | { type: "choice"; values: string[]; required?: boolean }
+  | { type: "labels" | "order" | "boolean" | "instant" | "date" | "https" | "registration" | "game" | "image" | "pdf";
+      required?: boolean };
+
+export type CmsMediaMime = "image/jpeg" | "image/png" | "image/webp" | "application/pdf";
+
+export type CmsMediaChoice = {
+  media_id: string;
+  version_id: string;
+  original_name: string;
+  mime: CmsMediaMime;
+  bytes: number;
+  width: number | null;
+  height: number | null;
+};
+
+type CmsMediaDelivery = Pick<CmsMediaChoice, "version_id" | "mime" | "bytes"> & { sha256: string };
+
 export type CmsDatabase = {
   public: {
     Tables: Record<string, never>;
@@ -106,6 +126,19 @@ export type CmsDatabase = {
       cms_revision_history: { Args: ContentArgs & { p_before_version?: number }; Returns: CmsRevisionSummary[] };
       cms_content_activity: { Args: ContentArgs & { p_before_event?: number }; Returns: CmsContentActivity[] };
       cms_read_published: { Args: ContentArgs; Returns: CmsPublishedContent[] };
+      cms_content_schema: { Args: { p_area: CmsArea }; Returns: Record<string, CmsFieldRule> | null };
+      cms_authorize_upload: { Args: { p_area: CmsArea; p_media_id: string | null }; Returns: undefined };
+      cms_record_media_version: {
+        Args: {
+          p_actor: string; p_area: CmsArea; p_existing_media_id: string | null; p_version_id: string;
+          p_name: string; p_mime: CmsMediaMime; p_bytes: number; p_sha256: string;
+          p_width: number | null; p_height: number | null;
+        };
+        Returns: string;
+      };
+      cms_list_media: { Args: { p_area: CmsArea; p_after_id?: string }; Returns: CmsMediaChoice[] };
+      cms_get_draft_media: { Args: { p_version_id: string }; Returns: CmsMediaDelivery[] };
+      cms_get_public_media: { Args: { p_version_id: string }; Returns: CmsMediaDelivery[] };
     };
   };
 };

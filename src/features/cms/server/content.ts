@@ -20,20 +20,20 @@ const messages: Record<ContentErrorCode, string> = {
 };
 
 export class CmsContentError extends Error {
-  constructor(readonly code: ContentErrorCode) {
+  constructor(readonly code: ContentErrorCode, readonly field?: string) {
     super(messages[code]);
     this.name = "CmsContentError";
   }
 }
 
-function databaseError(code: string) {
+function databaseError({ code, details }: { code: string; details?: string }) {
   switch (code) {
     case "42501": return new CmsContentError("denied");
     case "PT404": return new CmsContentError("not_found");
     case "PT409":
     case "23505": return new CmsContentError("conflict");
     case "PT429": return new CmsContentError("rate_limited");
-    case "22023":
+    case "22023": return new CmsContentError("invalid", details && /^[a-z][a-zA-Z]*$/.test(details) ? details : undefined);
     case "22P02":
     case "23502":
     case "23514": return new CmsContentError("invalid");
@@ -41,8 +41,8 @@ function databaseError(code: string) {
   }
 }
 
-function unwrap<T>(result: { data: T; error: null } | { data: null; error: { code: string } }): T {
-  if (result.error) throw databaseError(result.error.code);
+function unwrap<T>(result: { data: T; error: null } | { data: null; error: { code: string; details?: string } }): T {
+  if (result.error) throw databaseError(result.error);
   return result.data;
 }
 
@@ -130,6 +130,12 @@ export async function getCmsContent(contentId: string) {
   validateId(contentId);
   const { client } = await requireCmsAccess();
   return unwrap(await client.rpc("cms_get_content", { p_content_id: contentId }).maybeSingle());
+}
+
+export async function getCmsContentSchema(area: CmsArea) {
+  if (!cmsAreas.includes(area)) throw new CmsContentError("invalid");
+  const { client } = await requireCmsAccess({ edit: area });
+  return unwrap(await client.rpc("cms_content_schema", { p_area: area }));
 }
 
 export async function getCmsRevision(contentId: string, revisionId: string) {
