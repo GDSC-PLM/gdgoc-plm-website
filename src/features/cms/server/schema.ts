@@ -49,6 +49,8 @@ export type CmsRevisionSummary = {
 };
 
 export type CmsRevision = CmsRevisionSummary & CmsSnapshot;
+export type CmsEditorItem = Pick<CmsContent, "id" | "draft_revision_id" | "published_revision_id" | "archived_at"> &
+  Pick<CmsRevision, "title" | "slug" | "saved_at">;
 export type CmsPublicationAction = "publish" | "unpublish" | "archive";
 
 export type CmsContentActivity = {
@@ -126,6 +128,7 @@ export type CmsDatabase = {
       cms_revision_history: { Args: ContentArgs & { p_before_version?: number }; Returns: CmsRevisionSummary[] };
       cms_content_activity: { Args: ContentArgs & { p_before_event?: number }; Returns: CmsContentActivity[] };
       cms_read_published: { Args: ContentArgs; Returns: CmsPublishedContent[] };
+      cms_list_editor_content: { Args: { p_area: CmsArea; p_after_id?: string }; Returns: CmsEditorItem[] };
       cms_content_schema: { Args: { p_area: CmsArea }; Returns: Record<string, CmsFieldRule> | null };
       cms_authorize_upload: { Args: { p_area: CmsArea; p_media_id: string | null }; Returns: undefined };
       cms_record_media_version: {

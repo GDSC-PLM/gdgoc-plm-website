@@ -4,7 +4,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 
 import { requireCmsAccess } from "./access";
-import { cmsOrigin, cmsSupabaseConfig, createCmsClient } from "./client";
+import { cmsSupabaseConfig, createCmsClient } from "./client";
 import { CmsMediaError, isCmsMediaMime, readCmsMediaBody, validateCmsMediaFile } from "./media-file";
 import { cmsAreas, type CmsArea, type CmsDatabase } from "./schema";
 
@@ -64,7 +64,10 @@ function mediaDatabaseError(code: string) {
 }
 
 export async function uploadCmsMedia(request: Request) {
-  if (request.headers.get("origin") !== cmsOrigin) throw new CmsMediaError(403, "Origin denied.");
+  const host = request.headers.get("host");
+  if (!host || !/^127\.0\.0\.1(?::[0-9]+)?$/.test(host) || request.headers.get("origin") !== "http://" + host) {
+    throw new CmsMediaError(403, "Origin denied.");
+  }
   const query = new URL(request.url).searchParams;
   const area = mediaArea(query.get("area"));
   const mediaId = query.get("mediaId");
@@ -104,6 +107,16 @@ export async function listCmsMedia(area: CmsArea, afterId?: string) {
   const { data, error } = await client.rpc("cms_list_media", { p_area: area, p_after_id: afterId });
   if (error) throw mediaDatabaseError(error.code);
   return data;
+}
+
+export async function listEditorMedia(area: CmsArea) {
+  const files = await listCmsMedia(area);
+  let page = files.slice();
+  while (page.length === 50) {
+    page = await listCmsMedia(area, page.at(-1)?.media_id);
+    files.push(...page);
+  }
+  return files;
 }
 
 export async function deliverCmsMedia(versionId: string, visibility: "draft" | "published") {

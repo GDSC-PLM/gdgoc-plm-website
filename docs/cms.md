@@ -1,6 +1,6 @@
 # Local CMS
 
-The CMS is implemented in numbered stages. Stage 1 added administrator access. Stage 2 added revisions and publication operations. Stage 3 adds fixed content types and protected media. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
+The CMS is implemented in numbered stages. Stages 1 through 3 added administrator access, revisions and publication, and fixed content types with protected media. Stage 4 adds the editor and private previews. The work starts from `12cbf39bf326c240635dd3c731f48bb0d6db5500` on `cms/local`. The approved items in `cms-functionality-catalog.md` define scope.
 
 ## Run locally
 
@@ -104,7 +104,7 @@ The additive migration and access fixtures passed on the local Supabase PostgreS
 
 ### Editor, scheduler and cache
 
-The Stage 4 editor calls the server-only functions in `src/features/cms/server/content.ts`. Use `getCmsContent` to get the pointers, `getCmsRevision` to load a snapshot, and `listCmsRevisions` and `listCmsContentActivity` for protected history. History pages hold up to 50 entries. Use the last returned version or event ID as the next page's exclusive cursor. The editor uses `createCmsContent`, `saveCmsDraft` and `restoreCmsDraft` to write. Field-level feedback and confirmation screens arrive with the editor.
+The editor calls the server-only functions in `src/features/cms/server/content.ts`. Use `getCmsContent` to get the pointers, `getCmsRevision` to load a snapshot, and `listCmsRevisions` and `listCmsContentActivity` for protected history. History pages hold up to 50 entries. Use the last returned version or event ID as the next page's exclusive cursor. The editor uses `createCmsContent`, `saveCmsDraft` and `restoreCmsDraft` to write.
 
 Call `applyCmsPublication` from a Server Action for manual publish, unpublish or archive. Supply a fresh operation UUID per confirmed operation, and reuse it with the same arguments if the response is lost. A successful call returns the record UUID, area, action, old and new slugs, and new live revision UUID. A successful replay returns the original effect even if publication has since changed. Reusing the UUID with different arguments fails.
 
@@ -167,6 +167,28 @@ The SQL checks roll back. The HTTP check generates its own small images and PDFs
 
 The typed schema and revision fixtures passed on local Supabase. The HTTP check passed for wrong MIME, oversized images, unsupported and malformed files, disallowed PDF features, Storage isolation, exact-byte reuse and replacement, restored alt text, and PDF download and unpublish. Lint, route type generation, TypeScript, and an isolated production build with local font fixtures passed.
 
+## Stage 4 editor and private preview
+
+1. Sign in at `/admin` with an approved account or use the local fixture login above. Open a content area and select an existing item or **New draft**. Contributors see only their assigned areas. Full administrators see all eight content areas and **Manage administrator access** for invitations, permission changes and revocation. The database operator recovery procedure remains available in this guide.
+2. Complete the fields you have and choose **Save draft**. Fields marked required for publication can be left unfinished on a draft. Incorrect values are shown next to the field. The Markdown toolbar inserts headings, emphasis, lists and HTTPS links. Preview rendering ignores raw HTML and does not render embedded Markdown images or scripts. Use the media fields for images and PDFs.
+3. In a media field, select a reusable file or expand **Upload a file**. To keep the media ID while adding a version, select an existing file and choose **Upload as replacement**. Add alt text that describes the image in this use, or leave it blank for a decorative image. Save the draft to record the file selection and alt text.
+4. Open **Preview saved draft** to review the last save. The preview banner identifies the revision. **History** links to earlier saved snapshots and lets an editor restore one as a new draft. Restoring keeps the existing published version. Preview is scoped to the signed-in account, uses the shared content renderer and private media route, is excluded from indexing, and sends `no-store`. The current public pages remain placeholders until Stage 6.
+5. Full administrators can confirm **Publish**, **Unpublish**, or **Archive** from the saved editor state. **Cancel** and Escape close the confirmation. Publish checks the required fields and uses the shared transactional publication operation. Unpublish keeps the draft and history. Archive clears public visibility and makes the record read only, with review still available through the archived section.
+
+The editor warns before following links or leaving with unsaved changes. On browsers that support session storage, a reload in the same tab under the same account can offer **Recover unsaved edits** if the saved revision has not changed. The copy contains form values and selected media IDs, so an unuploaded local file still needs to be selected again. Saving clears the copy. If another editor saved first, copy any text you need before reloading, then review the latest draft before reapplying it. Closing a tab can discard its recovery data.
+
+### Stage 4 local checks
+
+Apply the editor listing migration to local Supabase. From the repo root with the app running and local fixture Auth enabled:
+
+```bash
+node --env-file=.env.local supabase/tests/cms-editor.mjs
+```
+
+The browser fixture uses Chrome at `/usr/bin/google-chrome` by default. Set `CMS_TEST_CHROMIUM` to a different local Chromium executable if needed. It creates a synthetic content item and media, then archives the item and removes the temporary Auth accounts.
+
+The Chrome workflow passed at desktop and mobile widths. It verified keyboard and confirmation focus, field errors, same-tab recovery, safe Markdown, file selection, private preview headers and anonymous denial, contributor scope, restore, publication confirmation, unpublish and archive. The media regression fixture, lint, route type generation, TypeScript, and the isolated production build with local font fixtures also passed.
+
 ## Catalog traceability
 
 Stage numbers identify the planned implementation and the checks that should prove it. Scheduled and content checks below are pending until their stage lands. Stage 7 reruns the integrated local checks.
@@ -174,10 +196,10 @@ Stage numbers identify the planned implementation and the checks that should pro
 | Catalog section | Included requirements | Stage and verification |
 | --- | --- | --- |
 | 1 | Create and edit structured records; save incomplete drafts; preserve published data while editing | 2–4 · `cms-revisions.sql` and `cms-revisions-concurrency.mjs`; typed forms arrive in stages 3–4 |
-| 1 | Required-field errors; unsaved-change warning; Markdown body input; authenticated draft preview; restore earlier revision as new draft | 4 · invalid/unsaved editor walkthrough, preview authorization and restore fixtures |
+| 1 | Required-field errors; unsaved-change warning; Markdown body input; authenticated draft preview; restore earlier revision as new draft | 4 · `cms-editor.mjs` exercises the browser workflow |
 | 2 | Events with dates, venue/mode, description, cover and approved registration link; blog entries including Projects, Past Events and Initiatives; Executive Board; partners and sponsors; Zines and downloads; Haribots; approved FAQ; external game title, description, instructions and approved URL | 3–4 · `cms-content-types.sql` covers schemas; Stage 4 connects the editor |
 | 2 | Reusable media; stable content/media IDs across title, slug and URL changes; categories, tags, topics and labels | 2–4, 6 · `cms-content-types.sql`, `cms-revisions.sql` and `cms-media.mjs` cover schemas, IDs and reuse |
-| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql` verifies transitions and projection; confirmation and rendered checks arrive in stages 4 and 6 |
+| 3 | Draft and published states; confirmed publish and unpublish; published-only public reads; editing does not change live data; archived records hidden with history; contributors draft and full administrators publish | 2, 4, 6 · `cms-revisions.sql` verifies transitions and projection; `cms-editor.mjs` covers confirmations and role behavior; public page checks arrive in Stage 6 |
 | 3 | Zoned publish/unpublish scheduling and cancellation; approved revision pinned; later edits require renewed approval; revoked approver jobs unassigned and paused; authorized reassignment and approval; audit for all transitions; retry safety; shared publication operation | 2, 5 · `cms-revisions.sql` verifies the shared pinned operation and replay; job checks arrive in stage 5 |
 | 3 | Revision history with actor and time; complete immutable revisions including referenced media; administrative audit | 1–5 · access and revision fixtures verify snapshots and audit; `cms-media.mjs` verifies file replacement and restoration |
 | 4 | Google OAuth; no public registration; explicit approval; server authorization; existing session revocation; full and scoped roles; separate editing and publication; invitation, expiry, recovery and handover | 1, 5 · `supabase/tests/cms-access.sql` and `supabase/tests/cms-local-signin.mjs --verify`; Google activation and live round trip deferred |

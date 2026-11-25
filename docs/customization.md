@@ -81,7 +81,7 @@ Artwork is in `public/landing/`; see [the artwork guide](../public/landing/READM
 
 `src/components/shared/page-template.tsx` supplies the same layout to About, Events, Projects, Blogs, Team, Partners, and Contact. The public route-group layout supplies static clouds/stars and the shared Google Sans Flex font. Its navigation and footer live in `src/components/shared/`. These pages deliberately use `noindex, follow` until real content is available; do not add them to the sitemap yet.
 
-The [local CMS guide](cms.md) tracks the administrator area and the stages that will make public content editable.
+The [local CMS guide](cms.md#stage-4-editor-and-private-preview) explains how to prepare, preview, and publish content from the administrator area. The public content pages will consume that content in Stage 6.
 
 ## Search and share identity
 

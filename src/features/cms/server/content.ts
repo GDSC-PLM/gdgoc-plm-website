@@ -4,7 +4,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 
 import { requireCmsAccess } from "./access";
 import { createCmsClient } from "./client";
-import { cmsAreas, type CmsArea, type CmsPublicationArgs, type CmsSnapshot } from "./schema";
+import { cmsAreas, type CmsArea, type CmsContent, type CmsEditorItem, type CmsPublicationArgs,
+  type CmsPublishedContent, type CmsRevision, type CmsSnapshot } from "./schema";
 
 export const cmsPublicCacheTag = "cms-public";
 
@@ -129,7 +130,7 @@ export async function applyCmsPublication(input: CmsPublicationArgs) {
 export async function getCmsContent(contentId: string) {
   validateId(contentId);
   const { client } = await requireCmsAccess();
-  return unwrap(await client.rpc("cms_get_content", { p_content_id: contentId }).maybeSingle());
+  return unwrap<CmsContent | null>(await client.rpc("cms_get_content", { p_content_id: contentId }).maybeSingle<CmsContent>());
 }
 
 export async function getCmsContentSchema(area: CmsArea) {
@@ -138,11 +139,26 @@ export async function getCmsContentSchema(area: CmsArea) {
   return unwrap(await client.rpc("cms_content_schema", { p_area: area }));
 }
 
+export async function listCmsEditorContent(area: CmsArea) {
+  const { client } = await requireCmsAccess({ edit: area });
+  const items: CmsEditorItem[] = [];
+  let after: string | undefined;
+  for (;;) {
+    const page = unwrap(await client.rpc("cms_list_editor_content", { p_area: area, p_after_id: after }));
+    items.push(...page);
+    if (page.length < 200) break;
+    after = page.at(-1)?.id;
+  }
+  return items.sort((a, b) => Date.parse(b.saved_at) - Date.parse(a.saved_at));
+}
+
 export async function getCmsRevision(contentId: string, revisionId: string) {
   validateId(contentId);
   validateId(revisionId);
   const { client } = await requireCmsAccess();
-  return unwrap(await client.rpc("cms_get_revision", { p_content_id: contentId, p_revision_id: revisionId }).maybeSingle());
+  return unwrap<CmsRevision | null>(await client.rpc("cms_get_revision", {
+    p_content_id: contentId, p_revision_id: revisionId,
+  }).maybeSingle<CmsRevision>());
 }
 
 function validateCursor(cursor?: number) {
@@ -167,5 +183,7 @@ export async function getPublishedCmsContent(contentId: string) {
   validateId(contentId);
   const client = createCmsClient({ getAll: () => [] });
   if (!client) throw new CmsContentError("unavailable");
-  return unwrap(await client.rpc("cms_read_published", { p_content_id: contentId }).maybeSingle());
+  return unwrap<CmsPublishedContent | null>(await client.rpc("cms_read_published", {
+    p_content_id: contentId,
+  }).maybeSingle<CmsPublishedContent>());
 }

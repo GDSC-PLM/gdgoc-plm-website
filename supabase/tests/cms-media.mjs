@@ -27,7 +27,7 @@ function upload(account, area, mime, data, mediaId) {
   const query = new URLSearchParams({ area, ...(mediaId ? { mediaId } : {}) });
   return app("/admin/media?" + query, account, {
     method: "POST", body: data,
-    headers: { origin: "http://127.0.0.1:3000", "content-type": mime, "x-file-name": "test-fixture" },
+    headers: { origin: site, "content-type": mime, "x-file-name": "test-fixture" },
   });
 }
 
