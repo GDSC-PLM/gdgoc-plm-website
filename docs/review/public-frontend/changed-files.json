@@ -1,0 +1,1014 @@
+[
+  {
+    "status": "M",
+    "file": "README.md"
+  },
+  {
+    "status": "M",
+    "file": "docs/customization.md"
+  },
+  {
+    "status": "M",
+    "file": "package.json"
+  },
+  {
+    "status": "M",
+    "file": "pnpm-lock.yaml"
+  },
+  {
+    "status": "M",
+    "file": "pnpm-workspace.yaml"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/about/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/blogs/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/contact/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/events/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/layout.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/partners/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/projects/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/(public)/team/page.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/bird-surprises.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/landing-backdrop.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/landing-config.ts"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/landing-constellations.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/landing-experience.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/landing-hero.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/app/_landing/origami-bird.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/app/fonts.ts"
+  },
+  {
+    "status": "D",
+    "file": "src/app/page.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/components/shared/footer.tsx"
+  },
+  {
+    "status": "M",
+    "file": "src/components/shared/navbar.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/components/shared/page-template.tsx"
+  },
+  {
+    "status": "D",
+    "file": "src/features/hype/components/hype-counter.tsx"
+  },
+  {
+    "status": "??",
+    "file": "docs/public-frontend-delivery.md"
+  },
+  {
+    "status": "??",
+    "file": "public/home/about/imgBackgroundShadowOverlayBlur.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/about/imgSvgSparkles.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/avp/imgSvg8.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/avp/imgSvg9.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/blogs/imgSvg10.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/blogs/imgSvg2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/blogs/imgSvg6.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/asset-blue-triangle.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/asset-red-triangle.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/asset-yellow-triangle.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/bg-constellation.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/bg-constellation1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/bg-galaxy.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/bg-galaxy1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/bg-star.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/border.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/card-executive-unflipped.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/card-executive-unflipped1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/card-executive-unflipped2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/card-executive-unflipped3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/moon.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/selected-thumb.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/star26.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/star27.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/star28.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector15.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector16.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector17.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector19.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector24.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector25.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector26.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector27.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector28.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector29.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector30.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector31.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector32.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector33.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector35.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector36.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector630.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector631.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector633.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/board/vector634.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/card-deputy-unflipped.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/card-moon.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/constellation.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/constellation1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/constellation2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/constellation3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/ellipse616.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/deputy-back/ellipse625.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/events/imgSvg1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/events/imgSvg2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/events/imgSvg3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/executive-face/img-executive.jpg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/flappy-details/cover-image-flappy-haribot.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/flappy-details/hugeicons-cancel01.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/flappy-details/logo.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/footer/imgSubtleTopGlowLine.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/asset-haribot-in-trophy.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-left-distant.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-left-upper.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-left-upper1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-left.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-middle.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-right-distant.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-cloud-right.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-galaxy.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-galaxy1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-galaxy2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-galaxy3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-orbit.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bg-orbit1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/bxs-user.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/logo-extra-game.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/logo-flappy-haribot.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/logo-matching-game.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/logo-perch-party.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/stars.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/upper-right-cloud-distant.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/upper-right-cloud-foreground.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector10.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector11.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector12.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector14.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector15.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector16.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector17.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector18.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector19.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector20.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector21.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector22.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector23.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector24.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector25.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector26.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector4.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector5.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector6.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector7.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector8.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/games/vector9.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/hero/img8PointCompassStarSvg.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/hero/imgCurvedLightStreakSwooshSvg.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/hero/imgSvg4PointSparkleStarsAroundFrame.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/matching-details/cover-image-matching-game.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet4.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-comet5.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-orbit1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-orbit2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/asset-orbit3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/bg-constellation.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/bg-constellation1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/bg-partnerships-constellations.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/bg-shading.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse592.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse593.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse594.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse595.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse88.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse89.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse90.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse91.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/ellipse92.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/group.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/group1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/group2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-blinc.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-bpi.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-course-hero.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-datacamp.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-devcon.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-gcash.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-home-credit.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-prosple.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-symph.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/img-whitecloak.png"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/smoothened-space.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/star26.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/star27.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/star28.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector1.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector10.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector11.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector12.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector13.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector14.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector15.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector16.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector17.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector18.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector19.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector2.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector20.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector21.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector22.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector23.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector24.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector25.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector26.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector27.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector28.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector29.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector3.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector30.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector31.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector32.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector33.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector34.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector35.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector36.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector37.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector38.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector39.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector4.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector40.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector41.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector42.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector43.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector44.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector45.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector46.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector47.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector48.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector5.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector6.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector7.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector8.svg"
+  },
+  {
+    "status": "??",
+    "file": "public/home/partners/vector9.svg"
+  },
+  {
+    "status": "??",
+    "file": "src/app/(public)/blogs/[slug]/page.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/(public)/events/[slug]/page.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/(public)/not-found.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/(public)/page.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/(public)/projects/[slug]/page.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/blog-carousel.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/executive-board-section.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/games-section.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/home-artwork.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/home-config.ts"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/introduction-sections.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/partner-motion.ts"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/partners-section.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/app/_home/video-panel.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/components/shared/content-card.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/components/shared/destination.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/components/shared/media-image.tsx"
+  },
+  {
+    "status": "??",
+    "file": "src/content/media.ts"
+  },
+  {
+    "status": "??",
+    "file": "src/content/partner-media.ts"
+  },
+  {
+    "status": "??",
+    "file": "src/content/partners.ts"
+  },
+  {
+    "status": "??",
+    "file": "src/content/public-content.ts"
+  }
+]

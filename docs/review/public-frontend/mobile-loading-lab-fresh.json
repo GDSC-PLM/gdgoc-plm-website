@@ -1,0 +1,221 @@
+{
+  "conditions": {
+    "viewport": "393x844",
+    "dpr": 2,
+    "latencyMs": 150,
+    "downloadBps": 200000,
+    "cpuSlowdown": 4,
+    "cache": "fresh browser context; cache disabled; local production server"
+  },
+  "metrics": {
+    "lcp": 2420,
+    "cls": 0,
+    "lcpElement": "IMG http://localhost:3001/home/hero/imgCurvedLightStreakSwooshSvg.svg"
+  },
+  "images": [
+    {
+      "url": "http://localhost:3001/brand/gdg-mark.svg",
+      "transfer": 798,
+      "encoded": 498
+    },
+    {
+      "url": "http://localhost:3001/home/hero/imgCurvedLightStreakSwooshSvg.svg",
+      "transfer": 2806,
+      "encoded": 2506
+    },
+    {
+      "url": "http://localhost:3001/home/hero/img8PointCompassStarSvg.svg",
+      "transfer": 1268,
+      "encoded": 968
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg1.svg",
+      "transfer": 2074,
+      "encoded": 1774
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg2.svg",
+      "transfer": 2021,
+      "encoded": 1721
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg3.svg",
+      "transfer": 1901,
+      "encoded": 1601
+    }
+  ],
+  "resources": [
+    {
+      "url": "http://localhost:3001/_next/static/media/0c89a48fa5027cee-s.p.2cyn07wtgehh0.woff2",
+      "transfer": 22620
+    },
+    {
+      "url": "http://localhost:3001/_next/static/media/bf8fd1b00f99294d.p.3nwdv0iwbn-fs.woff2",
+      "transfer": 136392
+    },
+    {
+      "url": "http://localhost:3001/_next/static/media/fba5a26ea33df6a3-s.p.18rizl4rsrl42.woff2",
+      "transfer": 27572
+    },
+    {
+      "url": "http://localhost:3001/brand/gdg-mark.svg",
+      "transfer": 798
+    },
+    {
+      "url": "http://localhost:3001/home/hero/imgCurvedLightStreakSwooshSvg.svg",
+      "transfer": 2806
+    },
+    {
+      "url": "http://localhost:3001/home/hero/img8PointCompassStarSvg.svg",
+      "transfer": 1268
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/24fqdq5p3u4fp.css",
+      "transfer": 21301
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/0e3j69bpoje5-.css",
+      "transfer": 2551
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/2v-n55zthy_ux.js",
+      "transfer": 2328
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/1xk08gfzz3w-u.js",
+      "transfer": 7982
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/1104kmk7wkgot.js",
+      "transfer": 71874
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/0zn-8vly1j4nv.js",
+      "transfer": 45495
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/turbopack-2qj84d2la3vir.js",
+      "transfer": 4151
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/0i-ki_wco9qln.js",
+      "transfer": 3958
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/3m3ap11dlt5bu.js",
+      "transfer": 982
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/05kvlg9jt19oa.js",
+      "transfer": 1247
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/0go78kji-qg-q.js",
+      "transfer": 9120
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/0au_6r65p2pwg.js",
+      "transfer": 1779
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/02xdqcnvv7u_1.js",
+      "transfer": 55658
+    },
+    {
+      "url": "http://localhost:3001/_next/static/chunks/3p9p12b59mhrg.js",
+      "transfer": 11486
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg1.svg",
+      "transfer": 2074
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg2.svg",
+      "transfer": 2021
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg3.svg",
+      "transfer": 1901
+    },
+    {
+      "url": "http://localhost:3001/?_rsc=5CB68i4pnAekjehf",
+      "transfer": 649
+    },
+    {
+      "url": "http://localhost:3001/events?_rsc=5CB68i4pnAekjehf",
+      "transfer": 658
+    },
+    {
+      "url": "http://localhost:3001/contact?_rsc=5CB68i4pnAekjehf",
+      "transfer": 656
+    },
+    {
+      "url": "http://localhost:3001/?_rsc=27z0MMZrARUjRVjW",
+      "transfer": 18948
+    },
+    {
+      "url": "http://localhost:3001/events?_rsc=XKceKsvJ3BbmdUrO",
+      "transfer": 4275
+    },
+    {
+      "url": "http://localhost:3001/contact?_rsc=P9Z4rH_Ug5YTOm2V",
+      "transfer": 3842
+    }
+  ],
+  "navigation": {
+    "name": "http://localhost:3001/",
+    "entryType": "navigation",
+    "startTime": 0,
+    "duration": 3079.699999988079,
+    "navigationId": 521,
+    "initiatorType": "navigation",
+    "deliveryType": "",
+    "nextHopProtocol": "http/1.1",
+    "renderBlockingStatus": "non-blocking",
+    "contentType": "text/html",
+    "contentEncoding": "gzip",
+    "workerStart": 0,
+    "workerRouterEvaluationStart": 0,
+    "workerCacheLookupStart": 0,
+    "workerMatchedSourceType": "",
+    "workerFinalSourceType": "",
+    "redirectStart": 0,
+    "redirectEnd": 0,
+    "fetchStart": 0.19999998807907104,
+    "domainLookupStart": 1,
+    "domainLookupEnd": 1.5999999940395355,
+    "connectStart": 1.5999999940395355,
+    "secureConnectionStart": 0,
+    "connectEnd": 2.2999999821186066,
+    "requestStart": 2.2999999821186066,
+    "responseStart": 15.799999982118607,
+    "firstInterimResponseStart": 0,
+    "finalResponseHeadersStart": 15.799999982118607,
+    "responseEnd": 378.19999998807907,
+    "transferSize": 41903,
+    "encodedBodySize": 41603,
+    "decodedBodySize": 314510,
+    "responseStatus": 200,
+    "serverTiming": [],
+    "unloadEventStart": 0,
+    "unloadEventEnd": 0,
+    "domInteractive": 1016.5,
+    "domContentLoadedEventStart": 1016.5,
+    "domContentLoadedEventEnd": 1017.5999999940395,
+    "domComplete": 3079.699999988079,
+    "loadEventStart": 3079.699999988079,
+    "loadEventEnd": 3079.699999988079,
+    "type": "navigate",
+    "redirectCount": 0,
+    "activationStart": 0,
+    "criticalCHRestart": 0,
+    "notRestoredReasons": null,
+    "confidence": {
+      "randomizedTriggerRate": 0.4994798,
+      "value": "low"
+    }
+  },
+  "covers": 0,
+  "video": 0,
+  "orbit": "paused"
+}

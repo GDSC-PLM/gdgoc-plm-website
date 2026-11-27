@@ -1,0 +1,548 @@
+{
+  "images": [
+    {
+      "url": "http://localhost:3001/brand/gdg-mark.svg",
+      "transfer": 798,
+      "encoded": 498
+    },
+    {
+      "url": "http://localhost:3001/home/hero/imgCurvedLightStreakSwooshSvg.svg",
+      "transfer": 2806,
+      "encoded": 2506
+    },
+    {
+      "url": "http://localhost:3001/home/hero/img8PointCompassStarSvg.svg",
+      "transfer": 1268,
+      "encoded": 968
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg1.svg",
+      "transfer": 2074,
+      "encoded": 1774
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg2.svg",
+      "transfer": 2021,
+      "encoded": 1721
+    },
+    {
+      "url": "http://localhost:3001/home/events/imgSvg3.svg",
+      "transfer": 1901,
+      "encoded": 1601
+    },
+    {
+      "url": "http://localhost:3001/home/blogs/imgSvg6.svg",
+      "transfer": 818,
+      "encoded": 518
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-orbit.svg",
+      "transfer": 754,
+      "encoded": 454
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-orbit1.svg",
+      "transfer": 762,
+      "encoded": 462
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-galaxy.svg",
+      "transfer": 873,
+      "encoded": 573
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector17.svg",
+      "transfer": 722,
+      "encoded": 422
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector18.svg",
+      "transfer": 721,
+      "encoded": 421
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector19.svg",
+      "transfer": 724,
+      "encoded": 424
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector20.svg",
+      "transfer": 722,
+      "encoded": 422
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector21.svg",
+      "transfer": 733,
+      "encoded": 433
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector22.svg",
+      "transfer": 721,
+      "encoded": 421
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector23.svg",
+      "transfer": 724,
+      "encoded": 424
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector24.svg",
+      "transfer": 1323,
+      "encoded": 1023
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector25.svg",
+      "transfer": 642,
+      "encoded": 342
+    },
+    {
+      "url": "http://localhost:3001/home/games/vector26.svg",
+      "transfer": 645,
+      "encoded": 345
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-cloud-right-distant.svg",
+      "transfer": 1264,
+      "encoded": 964
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-cloud-left-distant.svg",
+      "transfer": 1263,
+      "encoded": 963
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-cloud-left.svg",
+      "transfer": 1312,
+      "encoded": 1012
+    },
+    {
+      "url": "http://localhost:3001/home/games/bg-cloud-middle.svg",
+      "transfer": 1246,
+      "encoded": 946
+    },
+    {
+      "url": "http://localhost:3001/home/games/logo-flappy-haribot.png",
+      "transfer": 6982,
+      "encoded": 6682
+    },
+    {
+      "url": "http://localhost:3001/home/games/bxs-user.svg",
+      "transfer": 852,
+      "encoded": 552
+    },
+    {
+      "url": "http://localhost:3001/home/games/logo-matching-game.png",
+      "transfer": 6998,
+      "encoded": 6698
+    },
+    {
+      "url": "http://localhost:3001/home/games/logo-perch-party.png",
+      "transfer": 7147,
+      "encoded": 6847
+    },
+    {
+      "url": "http://localhost:3001/home/games/logo-extra-game.png",
+      "transfer": 7067,
+      "encoded": 6767
+    },
+    {
+      "url": "http://localhost:3001/home/board/vector634.svg",
+      "transfer": 1289,
+      "encoded": 989
+    },
+    {
+      "url": "http://localhost:3001/home/board/bg-star.svg",
+      "transfer": 1888,
+      "encoded": 1588
+    },
+    {
+      "url": "http://localhost:3001/home/board/selected-thumb.svg",
+      "transfer": 1210,
+      "encoded": 910
+    },
+    {
+      "url": "http://localhost:3001/home/board/moon.svg",
+      "transfer": 954,
+      "encoded": 654
+    },
+    {
+      "url": "http://localhost:3001/home/board/card-executive-unflipped.svg",
+      "transfer": 7883,
+      "encoded": 7583
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-executive.399fm9o49n1yx.jpg&w=384&q=75",
+      "transfer": 13712,
+      "encoded": 13412
+    },
+    {
+      "url": "http://localhost:3001/home/board/card-executive-unflipped1.svg",
+      "transfer": 7881,
+      "encoded": 7581
+    },
+    {
+      "url": "http://localhost:3001/home/board/card-executive-unflipped2.svg",
+      "transfer": 7882,
+      "encoded": 7582
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector34.svg",
+      "transfer": 686,
+      "encoded": 386
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector36.svg",
+      "transfer": 675,
+      "encoded": 375
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector37.svg",
+      "transfer": 674,
+      "encoded": 374
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector38.svg",
+      "transfer": 680,
+      "encoded": 380
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector39.svg",
+      "transfer": 692,
+      "encoded": 392
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector46.svg",
+      "transfer": 677,
+      "encoded": 377
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector47.svg",
+      "transfer": 674,
+      "encoded": 374
+    },
+    {
+      "url": "http://localhost:3001/home/board/card-executive-unflipped3.svg",
+      "transfer": 7881,
+      "encoded": 7581
+    },
+    {
+      "url": "http://localhost:3001/home/partners/bg-shading.svg",
+      "transfer": 897,
+      "encoded": 597
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet.svg",
+      "transfer": 1812,
+      "encoded": 1512
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet1.svg",
+      "transfer": 1830,
+      "encoded": 1530
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet2.svg",
+      "transfer": 1821,
+      "encoded": 1521
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet3.svg",
+      "transfer": 1827,
+      "encoded": 1527
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet4.svg",
+      "transfer": 1845,
+      "encoded": 1545
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-comet5.svg",
+      "transfer": 1847,
+      "encoded": 1547
+    },
+    {
+      "url": "http://localhost:3001/home/partners/bg-partnerships-constellations.svg",
+      "transfer": 8666,
+      "encoded": 8366
+    },
+    {
+      "url": "http://localhost:3001/home/partners/smoothened-space.svg",
+      "transfer": 1805,
+      "encoded": 1505
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector1.svg",
+      "transfer": 693,
+      "encoded": 393
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector12.svg",
+      "transfer": 675,
+      "encoded": 375
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector13.svg",
+      "transfer": 693,
+      "encoded": 393
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector14.svg",
+      "transfer": 693,
+      "encoded": 393
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector15.svg",
+      "transfer": 681,
+      "encoded": 381
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector5.svg",
+      "transfer": 694,
+      "encoded": 394
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector16.svg",
+      "transfer": 684,
+      "encoded": 384
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector28.svg",
+      "transfer": 681,
+      "encoded": 381
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector29.svg",
+      "transfer": 692,
+      "encoded": 392
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector30.svg",
+      "transfer": 677,
+      "encoded": 377
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector31.svg",
+      "transfer": 697,
+      "encoded": 397
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector32.svg",
+      "transfer": 691,
+      "encoded": 391
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector33.svg",
+      "transfer": 690,
+      "encoded": 390
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector35.svg",
+      "transfer": 682,
+      "encoded": 382
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector40.svg",
+      "transfer": 673,
+      "encoded": 373
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector41.svg",
+      "transfer": 681,
+      "encoded": 381
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector42.svg",
+      "transfer": 699,
+      "encoded": 399
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector43.svg",
+      "transfer": 677,
+      "encoded": 377
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector44.svg",
+      "transfer": 677,
+      "encoded": 377
+    },
+    {
+      "url": "http://localhost:3001/home/partners/vector45.svg",
+      "transfer": 675,
+      "encoded": 375
+    },
+    {
+      "url": "http://localhost:3001/home/partners/group.svg",
+      "transfer": 1139,
+      "encoded": 839
+    },
+    {
+      "url": "http://localhost:3001/home/partners/bg-constellation.svg",
+      "transfer": 3220,
+      "encoded": 2920
+    },
+    {
+      "url": "http://localhost:3001/home/partners/bg-constellation1.svg",
+      "transfer": 3256,
+      "encoded": 2956
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-orbit3.svg",
+      "transfer": 1057,
+      "encoded": 757
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-orbit2.svg",
+      "transfer": 1056,
+      "encoded": 756
+    },
+    {
+      "url": "http://localhost:3001/home/partners/asset-orbit1.svg",
+      "transfer": 1050,
+      "encoded": 750
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse88.svg",
+      "transfer": 1381,
+      "encoded": 1081
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse89.svg",
+      "transfer": 1199,
+      "encoded": 899
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-gcash.106zb6k1ilav-.png&w=384&q=75",
+      "transfer": 24192,
+      "encoded": 23892
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse90.svg",
+      "transfer": 1199,
+      "encoded": 899
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-blinc.0646ywuhbot5b.png&w=384&q=75",
+      "transfer": 10178,
+      "encoded": 9878
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse91.svg",
+      "transfer": 1190,
+      "encoded": 890
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-bpi.17ra8qx-zpdxt.png&w=384&q=75",
+      "transfer": 14184,
+      "encoded": 13884
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse592.svg",
+      "transfer": 1221,
+      "encoded": 921
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse594.svg",
+      "transfer": 1226,
+      "encoded": 926
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse595.svg",
+      "transfer": 1226,
+      "encoded": 926
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse593.svg",
+      "transfer": 1226,
+      "encoded": 926
+    },
+    {
+      "url": "http://localhost:3001/home/partners/star27.svg",
+      "transfer": 1076,
+      "encoded": 776
+    },
+    {
+      "url": "http://localhost:3001/home/partners/star26.svg",
+      "transfer": 1076,
+      "encoded": 776
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-devcon.0m9kqhpnks6b7.png&w=384&q=75",
+      "transfer": 8660,
+      "encoded": 8360
+    },
+    {
+      "url": "http://localhost:3001/home/partners/ellipse92.svg",
+      "transfer": 1207,
+      "encoded": 907
+    },
+    {
+      "url": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-course-hero.1esokwb7f-m4-.png&w=384&q=75",
+      "transfer": 11858,
+      "encoded": 11558
+    },
+    {
+      "url": "http://localhost:3001/home/footer/imgSubtleTopGlowLine.svg",
+      "transfer": 2101,
+      "encoded": 1801
+    }
+  ],
+  "js": [
+    "http://localhost:3001/_next/static/chunks/2v-n55zthy_ux.js",
+    "http://localhost:3001/_next/static/chunks/1xk08gfzz3w-u.js",
+    "http://localhost:3001/_next/static/chunks/1104kmk7wkgot.js",
+    "http://localhost:3001/_next/static/chunks/0zn-8vly1j4nv.js",
+    "http://localhost:3001/_next/static/chunks/turbopack-2qj84d2la3vir.js",
+    "http://localhost:3001/_next/static/chunks/0i-ki_wco9qln.js",
+    "http://localhost:3001/_next/static/chunks/3m3ap11dlt5bu.js",
+    "http://localhost:3001/_next/static/chunks/05kvlg9jt19oa.js",
+    "http://localhost:3001/_next/static/chunks/0go78kji-qg-q.js",
+    "http://localhost:3001/_next/static/chunks/0au_6r65p2pwg.js",
+    "http://localhost:3001/_next/static/chunks/02xdqcnvv7u_1.js",
+    "http://localhost:3001/_next/static/chunks/3p9p12b59mhrg.js",
+    "http://localhost:3001/_next/static/chunks/2g7kk5x1u6pku.js"
+  ],
+  "optimized": [
+    {
+      "src": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-gcash.106zb6k1ilav-.png&w=384&q=75",
+      "sizes": "(min-width:1440px) 15vw, 180px",
+      "width": 21.287506103515625,
+      "naturalWidth": 179
+    },
+    {
+      "src": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-blinc.0646ywuhbot5b.png&w=384&q=75",
+      "sizes": "(min-width:1440px) 15vw, 180px",
+      "width": 22.925003051757812,
+      "naturalWidth": 179
+    },
+    {
+      "src": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-bpi.17ra8qx-zpdxt.png&w=384&q=75",
+      "sizes": "(min-width:1440px) 15vw, 180px",
+      "width": 24.016666412353516,
+      "naturalWidth": 179
+    },
+    {
+      "src": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-devcon.0m9kqhpnks6b7.png&w=384&q=75",
+      "sizes": "(min-width:1440px) 15vw, 180px",
+      "width": 28.383331298828125,
+      "naturalWidth": 179
+    },
+    {
+      "src": "http://localhost:3001/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimg-course-hero.1esokwb7f-m4-.png&w=384&q=75",
+      "sizes": "(min-width:1440px) 15vw, 180px",
+      "width": 25.65416717529297,
+      "naturalWidth": 179
+    }
+  ],
+  "state": "running",
+  "newJs": [
+    "http://localhost:3001/_next/static/chunks/2g7kk5x1u6pku.js"
+  ],
+  "hiddenState": "paused",
+  "reducedState": "reduced",
+  "reducedMotionCheck": {
+    "method": "Separate regression context, wait for media-query event",
+    "tracks": 17,
+    "allOffsetsZero": true
+  },
+  "hiddenStateMethod": "Simulated document.hidden plus visibilitychange event"
+}

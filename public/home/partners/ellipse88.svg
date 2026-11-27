@@ -1,0 +1,61 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="642" height="602" viewBox="0 0 642 602" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Ellipse 88" filter="url(#filter0_ddiii_0_1575)">
+<ellipse cx="321" cy="301" rx="221" ry="201" fill="url(#paint0_radial_0_1575)"/>
+<mask id="stroke0_0_1575" fill="white">
+<path d="M542 301C542 412.009 443.055 502 321 502C198.945 502 100 412.009 100 301C100 189.991 198.945 100 321 100C443.055 100 542 189.991 542 301Z"/>
+</mask>
+<ellipse cx="321" cy="301" rx="221" ry="201" stroke-width="2" stroke="url(#paint1_linear_0_1575)" mask="url(#stroke0_0_1575)"/>
+</g>
+<defs>
+<filter id="filter0_ddiii_0_1575" x="0" y="0" width="642" height="602" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="14" operator="dilate" in="SourceAlpha" result="effect1_dropShadow_0_1575"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="20"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.772549 0 0 0 0 0.72549 0 0 0 0 0.933333 0 0 0 0.690196 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_1575"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="20" operator="dilate" in="SourceAlpha" result="effect2_dropShadow_0_1575"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="40"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.772549 0 0 0 0 0.72549 0 0 0 0 0.933333 0 0 0 0.376471 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_0_1575" result="effect2_dropShadow_0_1575"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_0_1575" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="-10"/>
+<feGaussianBlur stdDeviation="19.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect3_innerShadow_0_1575"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="6" operator="erode" in="SourceAlpha" result="effect4_innerShadow_0_1575"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="21.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.772549 0 0 0 0 0.72549 0 0 0 0 0.933333 0 0 0 1 0"/>
+<feBlend mode="normal" in2="effect3_innerShadow_0_1575" result="effect4_innerShadow_0_1575"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="20.5"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.960784 0 0 0 0 0.952941 0 0 0 0 0.980392 0 0 0 1 0"/>
+<feBlend mode="normal" in2="effect4_innerShadow_0_1575" result="effect5_innerShadow_0_1575"/>
+</filter>
+<radialGradient id="paint0_radial_0_1575" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(254.5 199) rotate(54.0524) scale(211.227 232.245)">
+<stop offset="0.134615" stop-color="#9274BA"/>
+<stop offset="0.370192" stop-color="#6F5CAD"/>
+<stop offset="0.490385" stop-color="#6A57A9"/>
+<stop offset="0.759615" stop-color="#485287"/>
+<stop offset="1" stop-color="#2F2651"/>
+</radialGradient>
+<linearGradient id="paint1_linear_0_1575" x1="336.5" y1="149.5" x2="390" y2="346.5" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9274BA"/>
+<stop offset="0.5" stop-color="#6A57A9"/>
+<stop offset="0.75" stop-color="#485287"/>
+<stop offset="0.875" stop-color="#2F2651"/>
+</linearGradient>
+</defs>
+</svg>

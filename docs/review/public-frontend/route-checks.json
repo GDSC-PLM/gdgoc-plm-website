@@ -1,0 +1,162 @@
+[
+  {
+    "route": "/",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/about",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/events",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/blogs",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/projects",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/team",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/partners",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/contact",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/events/innolympics-2026",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/events/general-assembly",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/events/intro-to-web-dev",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/blogs/story-placeholder-1",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/blogs/story-placeholder-2",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/blogs/story-placeholder-3",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/projects/project-placeholder-1",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/projects/project-placeholder-2",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/projects/project-placeholder-3",
+    "status": 200,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/events/unknown",
+    "status": 404,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/blogs/unknown",
+    "status": 404,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  },
+  {
+    "route": "/projects/unknown",
+    "status": 404,
+    "main": 1,
+    "h1": 1,
+    "overflow": false,
+    "broken": []
+  }
+]

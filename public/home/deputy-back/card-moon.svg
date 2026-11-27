@@ -1,0 +1,17 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="84.8877" height="86.1289" viewBox="0 0 84.8877 86.1289" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="card_moon" filter="url(#filter0_d_0_38)">
+<path d="M39.9131 12C31.1257 15.8876 24.9902 24.7128 24.9902 34.9785C24.9904 48.8387 36.174 60.075 49.9697 60.0752C60.23 60.0752 69.0431 53.8588 72.8877 44.9717C71.896 61.2442 58.661 74.1288 42.4756 74.1289C25.6447 74.1289 12.0002 60.1965 12 43.0098C12 26.7041 24.2811 13.3289 39.9131 12Z" fill="#F5F3FA" fill-opacity="0.9" shape-rendering="crispEdges"/>
+</g>
+<defs>
+<filter id="filter0_d_0_38" x="0" y="0" width="84.8877" height="86.1289" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="6"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.94902 0 0 0 0 0.52549 0 0 0 0 0.490196 0 0 0 0.8 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_38"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_38" result="shape"/>
+</filter>
+</defs>
+</svg>
